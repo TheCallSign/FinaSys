@@ -24,7 +24,6 @@ import java.util.logging.Logger;
  */
 public class LoginWindow extends javax.swing.JFrame {
 
-    private static volatile boolean loggedIn = false;
     
 
     /**
@@ -210,7 +209,6 @@ public class LoginWindow extends javax.swing.JFrame {
     
     // This isn't a joke, I swear.
     public static final synchronized void checkLoggedIn(boolean b) {
-        loggedIn = b;
         statusLbl.setForeground(Color.red);
         statusLbl.setText("Error connecting to database.");
         statusLbl.setToolTipText("Error connecting to database. Check log for more details.");

@@ -95,8 +95,12 @@ public class DatabaseManager {
     }
 
     public void shutdown() {
-        em.close();
-        emf.close();
+        if(em.isOpen()){
+            em.close();
+        }
+        if(emf.isOpen()){
+            emf.close();
+        }
 
     }
 

@@ -150,7 +150,8 @@ public class FinaSys {
     /**
      * Shutdown everything safely.
      */
-    public void shutdown(){
+    public static void shutdown(){
+        // Make sure we have logged out the database
         DatabaseManager.getInstance().shutdown();
         System.exit(0);
     }

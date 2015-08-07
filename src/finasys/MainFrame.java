@@ -69,6 +69,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("FinaSys - Advanced City Financal Management System");
+        setAlwaysOnTop(true);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setUndecorated(true);
         setResizable(false);
@@ -213,7 +214,6 @@ public class MainFrame extends javax.swing.JFrame {
                 af.setSelected(true);
             } catch (java.beans.PropertyVetoException e) {
             }
-//            af.toFront();
             return;
         }
         desktop.add(af);
@@ -264,6 +264,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         FinaSys.logout();
+        FinaSys.shutdown();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**

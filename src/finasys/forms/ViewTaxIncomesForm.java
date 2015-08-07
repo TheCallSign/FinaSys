@@ -22,7 +22,7 @@ import javax.swing.table.TableModel;
 public final class ViewTaxIncomesForm extends javax.swing.JInternalFrame {
 
     private static ViewTaxIncomesForm instance;
-    
+
     public static ViewTaxIncomesForm getInstance() {
         if (instance == null) {
             instance = new ViewTaxIncomesForm();
@@ -31,7 +31,7 @@ public final class ViewTaxIncomesForm extends javax.swing.JInternalFrame {
     }
     List<Tincomes> taxes;
     private int min = 0, max, pageCounter = 1;
-    
+
     /**
      * Creates new form ViewTaxIncomesForm
      */
@@ -39,15 +39,19 @@ public final class ViewTaxIncomesForm extends javax.swing.JInternalFrame {
         initComponents();
         updateTable();
     }
-    
-    
+
     public void updateTable() {
         max = Integer.parseInt(rowsPerScreenTxt.getText()) * pageCounter;
         min = Integer.parseInt(rowsPerScreenTxt.getText()) * (pageCounter - 1);
         taxes = DatabaseManager.getInstance().getTaxRows();
-        TaxTableModel tm = new TaxTableModel(taxes.subList(min, max));
+        final TaxTableModel tm = new TaxTableModel(taxes.subList(min, max));
 //        tm.newDataAvailable(new TableModelEvent(tm));
-        taxTable.setModel(tm);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                taxTable.setModel(tm);
+            }
+        });
     }
 
     /**

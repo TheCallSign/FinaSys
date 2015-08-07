@@ -63,6 +63,7 @@ public final class AdministrationForm extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setTitle("FinaSys Administration");
+        setMaximumSize(new java.awt.Dimension(406, 376));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Controls"));
 
@@ -157,7 +158,7 @@ public final class AdministrationForm extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
