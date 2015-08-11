@@ -130,8 +130,18 @@ public final class ViewTaxIncomesForm extends javax.swing.JInternalFrame {
         });
 
         lastPage.setText(">>");
+        lastPage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lastPageActionPerformed(evt);
+            }
+        });
 
         firstPage.setText("<<");
+        firstPage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                firstPageActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -204,6 +214,16 @@ public final class ViewTaxIncomesForm extends javax.swing.JInternalFrame {
             }
         });
     }//GEN-LAST:event_rowsPerScreenTxtKeyPressed
+
+    private void firstPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstPageActionPerformed
+        pageCounter = 1;
+        updateTable();
+    }//GEN-LAST:event_firstPageActionPerformed
+
+    private void lastPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastPageActionPerformed
+        pageCounter = pageCounterLimit;
+        updateTable();
+    }//GEN-LAST:event_lastPageActionPerformed
 
     
     
