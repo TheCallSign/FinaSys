@@ -21,15 +21,13 @@ import javax.swing.table.DefaultTableModel;
 public final class AdministrationForm extends javax.swing.JInternalFrame {
 
     private static AdministrationForm instance;
-    
-    
+
     public static AdministrationForm getInstance() {
         if (instance == null) {
             instance = new AdministrationForm();
         }
         return instance;
     }
-
 
     /**
      * Creates new form AdministrationForm
@@ -40,6 +38,8 @@ public final class AdministrationForm extends javax.swing.JInternalFrame {
 //        userTable.setModel(tm);
 //        userTable.
         updateUserList();
+        removeUserBtn.setEnabled(false);
+        editUserBtn.setEnabled(false);
     }
 
     /**
@@ -52,10 +52,10 @@ public final class AdministrationForm extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        removeUser = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        addUserBtn = new javax.swing.JButton();
+        removeUserBtn = new javax.swing.JButton();
+        editUserBtn = new javax.swing.JButton();
+        refreshBtn = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         userTable = new javax.swing.JTable();
@@ -67,26 +67,31 @@ public final class AdministrationForm extends javax.swing.JInternalFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Controls"));
 
-        jButton1.setText("Add User");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        addUserBtn.setText("Add User");
+        addUserBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                addUserBtnActionPerformed(evt);
             }
         });
 
-        removeUser.setText("Remove User");
-        removeUser.addActionListener(new java.awt.event.ActionListener() {
+        removeUserBtn.setText("Remove User");
+        removeUserBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                removeUserActionPerformed(evt);
+                removeUserBtnActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Edit User");
-
-        jButton4.setText("Refresh");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        editUserBtn.setText("Edit User");
+        editUserBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                editUserBtnActionPerformed(evt);
+            }
+        });
+
+        refreshBtn.setText("Refresh");
+        refreshBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshBtnActionPerformed(evt);
             }
         });
 
@@ -96,22 +101,22 @@ public final class AdministrationForm extends javax.swing.JInternalFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1)
+                .addComponent(addUserBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
+                .addComponent(editUserBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(removeUser)
+                .addComponent(removeUserBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4)
+                .addComponent(refreshBtn)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jButton1)
-                .addComponent(removeUser)
-                .addComponent(jButton3)
-                .addComponent(jButton4))
+                .addComponent(addUserBtn)
+                .addComponent(removeUserBtn)
+                .addComponent(editUserBtn)
+                .addComponent(refreshBtn))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("FinaSys Users"));
@@ -132,6 +137,11 @@ public final class AdministrationForm extends javax.swing.JInternalFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        userTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                userTableMouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(userTable);
@@ -174,11 +184,11 @@ public final class AdministrationForm extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
         updateUserList();
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_refreshBtnActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void addUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserBtnActionPerformed
         AddUserForm form = new AddUserForm();
         form.setVisible(true);
         form.setLocation(FinaSys.getCenteredFrame(form));
@@ -188,9 +198,9 @@ public final class AdministrationForm extends javax.swing.JInternalFrame {
         } catch (java.beans.PropertyVetoException e) {
         }
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_addUserBtnActionPerformed
 
-    private void removeUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeUserActionPerformed
+    private void removeUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeUserBtnActionPerformed
         int index = userTable.getSelectedRow();
         String username = (String) userTable.getValueAt(index, 0);
         int option = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove " + username + "?");
@@ -198,13 +208,24 @@ public final class AdministrationForm extends javax.swing.JInternalFrame {
             UserManager.getInstance().removeUser(index);
         }
         updateUserList();
-    }//GEN-LAST:event_removeUserActionPerformed
+    }//GEN-LAST:event_removeUserBtnActionPerformed
+
+    private void userTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userTableMouseClicked
+        int row = userTable.getSelectedRow();
+        if (row != -1) {
+            removeUserBtn.setEnabled(true);
+            editUserBtn.setEnabled(true);
+        }
+    }//GEN-LAST:event_userTableMouseClicked
+
+    private void editUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editUserBtnActionPerformed
+        
+    }//GEN-LAST:event_editUserBtnActionPerformed
 
     public void updateUserList() {
         List<User> users = UserManager.getInstance().getUsers();
         UserTableModel tm = new UserTableModel(users);
         tm.setRowCount(users.size());
-        tm.newDataAvailable(new TableModelEvent(tm));
         userTable.setModel(tm);
     }
 
@@ -213,12 +234,11 @@ public final class AdministrationForm extends javax.swing.JInternalFrame {
         private final String[] columnNames = {"Username", "Access Level"};
         private final Object[][] data;
 
-        public UserTableModel(List<User> users) { 
+        public UserTableModel(List<User> users) {
             if (users == null || users.isEmpty()) { // NULL CHECK 
                 data = new Object[][]{};
                 return;
             }
-            System.out.println(users);
             data = new Object[users.size()][2];
             for (int i = 0; i < users.size(); i++) {
                 data[i][0] = users.get(i).getUsername();
@@ -243,13 +263,13 @@ public final class AdministrationForm extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton addUserBtn;
+    private javax.swing.JButton editUserBtn;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JButton removeUser;
+    private javax.swing.JButton refreshBtn;
+    private javax.swing.JButton removeUserBtn;
     private javax.swing.JTable userTable;
     // End of variables declaration//GEN-END:variables
 }
