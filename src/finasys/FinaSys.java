@@ -137,7 +137,6 @@ public class FinaSys {
      */
     public static void logout() {
         mainFrame.setVisible(false);
-        mainFrame.exitAllForms();
         DatabaseManager.getInstance().shutdown();
         mainFrame.dispose();
         
@@ -147,6 +146,7 @@ public class FinaSys {
         loginWindow.setVisible(true);
         loginWindow.toFront();
     }
+    
     /**
      * Shutdown everything safely.
      */
@@ -187,9 +187,10 @@ public class FinaSys {
                 DatabaseManager.getInstance();
                 AccessManager.getInstance().setUserLevel(Level.NONE);
                 
+                //Set up login window
                 loginWindow = new LoginWindow();
                 loginWindow.setVisible(true);
-                loginWindow.setAlwaysOnTop(true);
+                loginWindow.toFront();
             }
         });
     }
