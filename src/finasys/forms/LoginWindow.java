@@ -165,32 +165,40 @@ public class LoginWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
-        boolean passwordAccepted = false;
+
         // For debugging purposes. Uncomment to quickly log in with the password 123
 //        if (Arrays.equals(passwordFld.getPassword(), new char[]{'1', '2', '3'})) {
 //            User user = new User(AccessManager.Level.ADMIN);
 //            login(user);
 //            return;
 //        }
-        for (User user : UserManager.getInstance().getUsers()) {
-            if (user.getUsername().toLowerCase().equals(usernameFld.getText().toLowerCase())) {
-                byte[] hash = null;
-                try {
-                    hash = PasswordUtils.hash(user.getSalt(), passwordFld.getPassword());
-                } catch (InvalidKeySpecException | NoSuchAlgorithmException ex) {
-                    Logger.getLogger(LoginWindow.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                if (Arrays.equals(user.getPassword(), hash)) {
-                    login(user);
-                    passwordAccepted = true;
-                }
-            }
-            if (!passwordAccepted) {
-                statusLbl.setForeground(Color.red);
-                statusLbl.setText("Incorrect username or password.");
-            }
 
-        }
+        // Run the checking asynchronisly, as password hashing can be quite cpu-intensive.
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                boolean passwordAccepted = false;
+                for (User user : UserManager.getInstance().getUsers()) {
+                    if (user.getUsername().toLowerCase().equals(usernameFld.getText().toLowerCase())) {
+                        byte[] hash = null;
+                        try {
+                            hash = PasswordUtils.hash(user.getSalt(), passwordFld.getPassword());
+                        } catch (InvalidKeySpecException | NoSuchAlgorithmException ex) {
+                            Logger.getLogger(LoginWindow.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        if (Arrays.equals(user.getPassword(), hash)) {
+                            login(user);
+                            passwordAccepted = true;
+                        }
+                    }
+                    if (!passwordAccepted) {
+                        statusLbl.setForeground(Color.red);
+                        statusLbl.setText("Incorrect username or password.");
+                    }
+                }
+            }
+        });
+
     }//GEN-LAST:event_loginBtnActionPerformed
 
     private void login(User user) {
