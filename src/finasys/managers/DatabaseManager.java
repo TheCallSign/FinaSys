@@ -22,7 +22,6 @@ import org.apache.derby.client.am.Connection;
 public class DatabaseManager {
 
     private static DatabaseManager instance;
-//    private static final String dbURL = "jdbc:derby://localhost:1527/FinacSys;user=administrator;password=admin";
     
     private EntityManagerFactory emf;
     private EntityManager em;
