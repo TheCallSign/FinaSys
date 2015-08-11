@@ -9,7 +9,9 @@ import finasys.User;
 import finasys.enities.Tincomes;
 import finasys.forms.administration.AdministrationForm;
 import finasys.managers.DatabaseManager;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
@@ -28,30 +30,46 @@ public final class ViewTaxIncomesForm extends javax.swing.JInternalFrame {
             instance = new ViewTaxIncomesForm();
         }
         return instance;
-    }
-    List<Tincomes> taxes;
-    private int min = 0, max, pageCounter = 1;
+    } 
+
+    private List<Tincomes> taxes;
+    private int min = 0, max, pageCounter = 1, pageCounterLimit;
 
     /**
      * Creates new form ViewTaxIncomesForm
      */
     public ViewTaxIncomesForm() {
         initComponents();
+        this.setTitle("Taxes");
         updateTable();
     }
 
     public void updateTable() {
-        max = Integer.parseInt(rowsPerScreenTxt.getText()) * pageCounter;
-        min = Integer.parseInt(rowsPerScreenTxt.getText()) * (pageCounter - 1);
+        if(rowsPerScreenTxt.getText().isEmpty()) {
+            rowsPerScreenTxt.setText("20");
+        }
+        int rowsPerScreen = Integer.parseInt(rowsPerScreenTxt.getText());
         taxes = DatabaseManager.getInstance().getTaxRows();
-        final TaxTableModel tm = new TaxTableModel(taxes.subList(min, max));
+        int maxSize = taxes.size();
+        int a = maxSize / rowsPerScreen;
+        pageCounterLimit = a == 0 ? a : a + 1;
+        if (pageCounter < 1) {
+            pageCounter = 1;
+        }
+        if (pageCounterLimit < pageCounter) {
+            pageCounter = pageCounterLimit;
+        }
+        max = rowsPerScreen * pageCounter;
+        min = rowsPerScreen * (pageCounter - 1);
+        if (max > maxSize) {
+            max = min + (maxSize % rowsPerScreen);
+        }
+        TaxTableModel tm = new TaxTableModel(taxes.subList(min, max));
+        tm.setRowCount(tm.getSize());
+
 //        tm.newDataAvailable(new TableModelEvent(tm));
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                taxTable.setModel(tm);
-            }
-        });
+        taxTable.setModel(tm);
+
     }
 
     /**
@@ -91,6 +109,11 @@ public final class ViewTaxIncomesForm extends javax.swing.JInternalFrame {
         jLabel1.setText("Rows per screen:");
 
         rowsPerScreenTxt.setText("20");
+        rowsPerScreenTxt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                rowsPerScreenTxtKeyPressed(evt);
+            }
+        });
 
         nextPage.setText(">");
         nextPage.addActionListener(new java.awt.event.ActionListener() {
@@ -163,6 +186,27 @@ public final class ViewTaxIncomesForm extends javax.swing.JInternalFrame {
         updateTable();
     }//GEN-LAST:event_prevPageActionPerformed
 
+    private void rowsPerScreenTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rowsPerScreenTxtKeyPressed
+//        final char key = evt.getKeyChar();
+        if (!Character.isDigit(evt.getKeyChar())) {
+            evt.consume();
+            System.out.println("A FUCKEN LETTER");
+            return;
+        }
+        
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                int rowsPerScreen = Integer.parseInt(rowsPerScreenTxt.getText());
+                if (rowsPerScreen > taxes.size()) {
+                    rowsPerScreenTxt.setText(taxes.size() + "");
+                }
+            }
+        });
+    }//GEN-LAST:event_rowsPerScreenTxtKeyPressed
+
+    
+    
     private static class TaxTableModel extends DefaultTableModel {
 
         private final String[] columnNames = {"Tax ID", "Amount", "Date"};
@@ -194,6 +238,10 @@ public final class ViewTaxIncomesForm extends javax.swing.JInternalFrame {
         @Override
         public Object getValueAt(int row, int col) {
             return data[row][col];
+        }
+
+        public int getSize() {
+            return data.length;
         }
     }
 
