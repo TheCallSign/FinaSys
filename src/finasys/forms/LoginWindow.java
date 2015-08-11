@@ -167,11 +167,12 @@ public class LoginWindow extends javax.swing.JFrame {
 
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
         boolean passwordAccepted = false;
-        if (Arrays.equals(passwordFld.getPassword(), new char[]{'1', '2', '3'})) {
-            User user = new User(AccessManager.Level.ADMIN);
-            login(user);
-            return;
-        }
+        // For debugging purposes. Uncomment to quickly log in with the password 123
+//        if (Arrays.equals(passwordFld.getPassword(), new char[]{'1', '2', '3'})) {
+//            User user = new User(AccessManager.Level.ADMIN);
+//            login(user);
+//            return;
+//        }
         for (User user : UserManager.getInstance().getUsers()) {
             if (user.getUsername().toLowerCase().equals(usernameFld.getText().toLowerCase())) {
                 byte[] hash = null;
