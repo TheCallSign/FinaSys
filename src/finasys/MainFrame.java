@@ -9,6 +9,9 @@ import finasys.forms.administration.AdministrationForm;
 import finasys.forms.GraphForm;
 import finasys.forms.ViewTaxIncomesForm;
 import finasys.forms.staff.StaffRegistrationForm;
+import finasys.managers.AccessManager;
+import finasys.managers.DatabaseManager;
+import java.awt.Color;
 import java.awt.Component;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -36,10 +39,37 @@ public class MainFrame extends javax.swing.JFrame {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 //        Access check
         doAccessCheck();
+        // Update Status bar
+        statusUpdate();
         // If it gets laggy uncomment this.
 //        desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
     }
 
+    public final void statusUpdate(){
+        userLbl.setText(FinaSys.getUser().getUsername());
+        userLbl.setForeground(Color.green);
+        if(DatabaseManager.getInstance().isConnected()){
+            databaseStatusLbl.setText("Connected");
+            databaseStatusLbl.setForeground(Color.green);
+        } else {
+            databaseStatusLbl.setText("Disconnected");
+            databaseStatusLbl.setForeground(Color.red);
+        }
+        switch(FinaSys.getUser().getAccessLevel()) {
+            case ADMIN:
+                accessLvlLbl.setText("Administrator");
+                accessLvlLbl.setForeground(Color.red);
+                break;
+            case MOD:
+                accessLvlLbl.setText("Manager");
+                accessLvlLbl.setForeground(Color.blue);
+                break;
+            case USER:
+                accessLvlLbl.setText("User");
+                accessLvlLbl.setForeground(Color.green);
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -56,11 +86,22 @@ public class MainFrame extends javax.swing.JFrame {
         addStaffBtn = new javax.swing.JButton();
         listStaffMembersBtn = new javax.swing.JButton();
         jToolBar1 = new javax.swing.JToolBar();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
         jButton3 = new javax.swing.JButton();
         listTaxIncomeBtn = new javax.swing.JButton();
-        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         jSeparator1 = new javax.swing.JToolBar.Separator();
         adminBtn = new javax.swing.JButton();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        userLbl = new javax.swing.JLabel();
+        jSeparator3 = new javax.swing.JSeparator();
+        jLabel2 = new javax.swing.JLabel();
+        jSeparator4 = new javax.swing.JSeparator();
+        jLabel3 = new javax.swing.JLabel();
+        databaseStatusLbl = new javax.swing.JLabel();
+        accessLvlLbl = new javax.swing.JLabel();
+        jSeparator5 = new javax.swing.JSeparator();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         logoutMenuBtn = new javax.swing.JMenuItem();
@@ -95,6 +136,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jToolBar1.setRollover(true);
         controlToolBar.add(jToolBar1);
+        controlToolBar.add(jSeparator2);
 
         jButton3.setText("Example Graph");
         jButton3.setFocusable(false);
@@ -117,7 +159,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         controlToolBar.add(listTaxIncomeBtn);
-        controlToolBar.add(filler2);
         controlToolBar.add(jSeparator1);
 
         adminBtn.setText("Administration");
@@ -130,6 +171,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         controlToolBar.add(adminBtn);
+        controlToolBar.add(filler2);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -145,19 +187,91 @@ public class MainFrame extends javax.swing.JFrame {
             .addComponent(controlToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+
+        jLabel1.setText("Logged in as:");
+
+        userLbl.setText("USER");
+
+        jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        jLabel2.setText("Database Status: ");
+
+        jSeparator4.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        jLabel3.setText("Access Level: ");
+
+        databaseStatusLbl.setText("D-Status");
+
+        accessLvlLbl.setText("ACCESS");
+
+        jSeparator5.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(userLbl)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addComponent(databaseStatusLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(accessLvlLbl)
+                .addGap(18, 18, 18)
+                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(accessLvlLbl))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jSeparator4)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(databaseStatusLbl)
+                                .addComponent(jSeparator5))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel1)
+                                .addComponent(userLbl))
+                            .addComponent(jSeparator3))))
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout desktopLayout = new javax.swing.GroupLayout(desktop);
         desktop.setLayout(desktopLayout);
         desktopLayout.setHorizontalGroup(
             desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         desktopLayout.setVerticalGroup(
             desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(desktopLayout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 233, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 192, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         desktop.setLayer(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        desktop.setLayer(jPanel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         fileMenu.setText("File");
 
@@ -270,23 +384,34 @@ public class MainFrame extends javax.swing.JFrame {
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel accessLvlLbl;
     private javax.swing.JButton addStaffBtn;
     private javax.swing.JButton adminBtn;
     private javax.swing.JToolBar controlToolBar;
+    private javax.swing.JLabel databaseStatusLbl;
     private static javax.swing.JDesktopPane desktop;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenu fileMenu;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JToolBar.Separator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JSeparator jSeparator5;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JButton listStaffMembersBtn;
     private javax.swing.JButton listTaxIncomeBtn;
     private javax.swing.JMenuItem logoutMenuBtn;
+    private javax.swing.JLabel userLbl;
     // End of variables declaration//GEN-END:variables
 
     private void doStuff() {
