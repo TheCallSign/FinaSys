@@ -69,7 +69,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("FinaSys - Advanced City Financal Management System");
-        setAlwaysOnTop(true);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setUndecorated(true);
         setResizable(false);
@@ -263,7 +262,6 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutMenuBtnActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        FinaSys.logout();
         FinaSys.shutdown();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -302,9 +300,7 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
 
-    void exitAllForms() {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
 
     private void doAccessCheck() {
         switch (FinaSys.getUser().getAccessLevel()) {
