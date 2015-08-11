@@ -39,7 +39,8 @@ public class DatabaseManager {
     }
 
     public boolean isConnected() {
-        return emf != null && em.isOpen() && em != null;
+        
+        return emf != null && em != null;
     }
     /**
      * Connect to the database.

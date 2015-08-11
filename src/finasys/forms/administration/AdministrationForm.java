@@ -191,7 +191,7 @@ public final class AdministrationForm extends javax.swing.JInternalFrame {
     private void addUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserBtnActionPerformed
         AddUserForm form = new AddUserForm();
         form.setVisible(true);
-        form.setLocation(FinaSys.getCenteredFrame(form));
+        form.setLocation(FinaSys.centreFrame(form));
         finasys.MainFrame.getDesktop().add(form);
         try {
             form.setSelected(true);

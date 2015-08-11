@@ -8,6 +8,7 @@ package finasys.forms;
 import finasys.FinaSys;
 import finasys.User;
 import finasys.managers.AccessManager;
+import finasys.managers.DatabaseManager;
 import finasys.managers.PasswordUtils;
 import finasys.managers.UserManager;
 import java.awt.Color;
@@ -23,8 +24,6 @@ import java.util.logging.Logger;
  * @author giddyc
  */
 public class LoginWindow extends javax.swing.JFrame {
-
-    
 
     /**
      * Creates new form LoginWindow
@@ -198,16 +197,18 @@ public class LoginWindow extends javax.swing.JFrame {
         final User u = user;
         statusLbl.setForeground(Color.blue);
         statusLbl.setText("Password accepted, logging in...");
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                AccessManager.getInstance().setUserLevel(u.getAccessLevel());
-                checkLoggedIn(FinaSys.login(u));
+                DatabaseManager.getInstance().connect();
             }
         });
-        
+        t.start();
+        AccessManager.getInstance().setUserLevel(u.getAccessLevel());
+        checkLoggedIn(FinaSys.login(u));
+
     }
-    
+
     // This isn't a joke, I swear.
     public static final synchronized void checkLoggedIn(boolean b) {
         statusLbl.setForeground(Color.red);

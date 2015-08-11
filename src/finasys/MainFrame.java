@@ -13,6 +13,8 @@ import finasys.managers.AccessManager;
 import finasys.managers.DatabaseManager;
 import java.awt.Color;
 import java.awt.Component;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import tests.Graph;
@@ -41,21 +43,23 @@ public class MainFrame extends javax.swing.JFrame {
         doAccessCheck();
         // Update Status bar
         statusUpdate();
+        // start the status bar update thread
+        startStatusThread();
         // If it gets laggy uncomment this.
 //        desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
     }
 
-    public final void statusUpdate(){
+    public final synchronized void statusUpdate() {
         userLbl.setText(FinaSys.getUser().getUsername());
         userLbl.setForeground(Color.green);
-        if(DatabaseManager.getInstance().isConnected()){
-            databaseStatusLbl.setText("Connected");
+        if (DatabaseManager.getInstance().isConnected()) {
+            databaseStatusLbl.setText("Online");
             databaseStatusLbl.setForeground(Color.green);
         } else {
-            databaseStatusLbl.setText("Disconnected");
+            databaseStatusLbl.setText("Offline");
             databaseStatusLbl.setForeground(Color.red);
         }
-        switch(FinaSys.getUser().getAccessLevel()) {
+        switch (FinaSys.getUser().getAccessLevel()) {
             case ADMIN:
                 accessLvlLbl.setText("Administrator");
                 accessLvlLbl.setForeground(Color.red);
@@ -69,7 +73,28 @@ public class MainFrame extends javax.swing.JFrame {
                 accessLvlLbl.setForeground(Color.green);
         }
     }
-    
+
+    private void startStatusThread() {
+        Thread statusBarThread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                synchronized (this) {
+                    while (!FinaSys.isStopped()) {
+                        statusUpdate();
+                        try {
+                            this.wait(1000);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+            }
+
+        });
+        statusBarThread.start();
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -212,6 +237,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(userLbl)
@@ -229,7 +255,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(accessLvlLbl)
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -330,7 +356,7 @@ public class MainFrame extends javax.swing.JFrame {
             return;
         }
         desktop.add(af);
-        af.setLocation(FinaSys.getCenteredFrame(af));
+        af.setLocation(FinaSys.centreFrame(af));
         af.setVisible(true);
         try {
             af.setSelected(true);
@@ -344,7 +370,7 @@ public class MainFrame extends javax.swing.JFrame {
         desktop.add(graphSettings);
         graphSettings.setVisible(true);
         desktop.add(gf);
-        gf.setLocation(FinaSys.getCenteredFrame(gf));
+        gf.setLocation(FinaSys.centreFrame(gf));
         gf.setVisible(true);
         try {
             gf.setSelected(true);
@@ -353,7 +379,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void listTaxIncomeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listTaxIncomeBtnActionPerformed
-        ViewTaxIncomesForm form =  ViewTaxIncomesForm.getInstance();
+        ViewTaxIncomesForm form = ViewTaxIncomesForm.getInstance();
         if (form.isVisible()) {
             try {
                 form.setSelected(true);
@@ -363,7 +389,7 @@ public class MainFrame extends javax.swing.JFrame {
             return;
         }
         desktop.add(form);
-        form.setLocation(FinaSys.getCenteredFrame(form));
+        form.setLocation(FinaSys.centreFrame(form));
         form.setVisible(true);
         try {
             form.setSelected(true);
@@ -425,8 +451,6 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
 
-    
-
     private void doAccessCheck() {
         switch (FinaSys.getUser().getAccessLevel()) {
             case NONE:
@@ -440,4 +464,5 @@ public class MainFrame extends javax.swing.JFrame {
 
         }
     }
+
 }

@@ -1,14 +1,14 @@
-Tue Aug 11 13:18:44 CAT 2015 : Apache Derby Network Server - 10.8.3.0 - (1405108) started and ready to accept connections on port 1527
+Tue Aug 11 19:39:36 CAT 2015 : Apache Derby Network Server - 10.11.1.2 - (1629631) started and ready to accept connections on port 1527
 ----------------------------------------------------------------
-Tue Aug 11 13:18:51 CAT 2015:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.3.0 - (1405108): instance a816c00e-014f-1c7b-e020-00006828e5f7 
-on database directory E:\PAT\FinaSys\FinacSys  with class loader sun.misc.Launcher$AppClassLoader@47858e 
-Loaded from file:/C:/Program%20Files/Java/jdk1.7.0_45/db/lib/derby.jar
+Tue Aug 11 19:40:18 CAT 2015:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): instance a816c00e-014f-1dd8-7074-00006828e5f7 
+on database directory E:\PAT\FinaSys\FinacSys with class loader sun.misc.Launcher$AppClassLoader@60e53b93 
+Loaded from file:/C:/Program%20Files/Java/jdk1.8.0_45/db/lib/derby.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.7.0_45-b18
-user.dir=C:\Program Files\Java\jdk1.7.0_45\db
-os.name=Windows 7
-os.arch=x86
-os.version=6.1
+java.runtime.version=1.8.0_45-b15
+user.dir=C:\Program Files\Java\jdk1.8.0_45\db
+os.name=Windows 8.1
+os.arch=amd64
+os.version=6.3
 derby.system.home=E:\PAT\FinaSys
 Database Class Loader started - derby.database.classpath=''

@@ -84,6 +84,11 @@ public class FinaSys {
      */
     private static User currentUser;
 
+    /**
+     * Boolean to keep the state of the program.
+     */
+    private static volatile boolean stopped = false;
+    
     /** 
      * Get Desktop pane instance
      * @return 
@@ -98,7 +103,7 @@ public class FinaSys {
      * @param frame JInternalFrame to centre.
      * @return Centre point.
      */
-    public static Point getCenteredFrame(JInternalFrame frame) {
+    public static Point centreFrame(JInternalFrame frame) {
         return new Point(centre.x - frame.getWidth() / 2,
                 centre.y - frame.getHeight() / 2);
     }
@@ -120,9 +125,8 @@ public class FinaSys {
      */
     public static boolean login(User user) {
         currentUser = user;
-        if(!DatabaseManager.getInstance().connect()) {
-            return false;
-        }
+        
+        
         loginWindow.setVisible(false);
         loginWindow.dispose();
         
@@ -151,10 +155,16 @@ public class FinaSys {
      * Shutdown everything safely.
      */
     public static void shutdown(){
+        stopped = true;
         // Make sure we have logged out the database
         DatabaseManager.getInstance().shutdown();
         System.exit(0);
     }
+
+    public static boolean isStopped() {
+        return stopped;
+    }
+    
     /**
      * Entry Method.
      * Initialize managers, initialize the login window, set userlevel to NONE 
