@@ -39,7 +39,6 @@ public class DatabaseManager {
     }
 
     public boolean isConnected() {
-        
         return emf != null && em != null;
     }
     /**

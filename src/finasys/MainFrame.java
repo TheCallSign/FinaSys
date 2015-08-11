@@ -13,6 +13,9 @@ import finasys.managers.AccessManager;
 import finasys.managers.DatabaseManager;
 import java.awt.Color;
 import java.awt.Component;
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
@@ -72,8 +75,12 @@ public class MainFrame extends javax.swing.JFrame {
                 accessLvlLbl.setText("User");
                 accessLvlLbl.setForeground(Color.green);
         }
+        Date d = Calendar.getInstance().getTime();
+        DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM);
+        dateLbl.setText(df.format(d));
     }
 
+    
     private void startStatusThread() {
         Thread statusBarThread = new Thread(new Runnable() {
 
@@ -127,6 +134,7 @@ public class MainFrame extends javax.swing.JFrame {
         databaseStatusLbl = new javax.swing.JLabel();
         accessLvlLbl = new javax.swing.JLabel();
         jSeparator5 = new javax.swing.JSeparator();
+        dateLbl = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         logoutMenuBtn = new javax.swing.JMenuItem();
@@ -232,6 +240,9 @@ public class MainFrame extends javax.swing.JFrame {
 
         jSeparator5.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
+        dateLbl.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        dateLbl.setText("TIME");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -255,30 +266,34 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(accessLvlLbl)
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(dateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(accessLvlLbl))
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jSeparator4)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jSeparator5)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(databaseStatusLbl)
-                                .addComponent(jSeparator5))
+                                .addComponent(databaseStatusLbl))
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel1)
                                 .addComponent(userLbl))
-                            .addComponent(jSeparator3))))
+                            .addComponent(jSeparator3)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel3)
+                                .addComponent(accessLvlLbl))
+                            .addComponent(dateLbl))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -415,6 +430,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton adminBtn;
     private javax.swing.JToolBar controlToolBar;
     private javax.swing.JLabel databaseStatusLbl;
+    private javax.swing.JLabel dateLbl;
     private static javax.swing.JDesktopPane desktop;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenu fileMenu;
