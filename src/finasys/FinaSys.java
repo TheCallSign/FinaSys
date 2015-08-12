@@ -141,7 +141,9 @@ public class FinaSys {
      */
     public static void logout() {
         mainFrame.setVisible(false);
-        DatabaseManager.getInstance().shutdown();
+        if(DatabaseManager.getInstance().isConnected()){
+            DatabaseManager.getInstance().shutdown();
+        }
         mainFrame.dispose();
         
         currentUser = null;
@@ -157,8 +159,11 @@ public class FinaSys {
     public static void shutdown(){
         stopped = true;
         // Make sure we have logged out the database
-        DatabaseManager.getInstance().shutdown();
-        System.exit(0);
+        try {
+            DatabaseManager.getInstance().shutdown();
+        } finally {
+            System.exit(0);
+        }
     }
 
     public static boolean isStopped() {
