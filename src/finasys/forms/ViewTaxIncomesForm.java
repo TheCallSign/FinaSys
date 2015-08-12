@@ -200,7 +200,6 @@ public final class ViewTaxIncomesForm extends javax.swing.JInternalFrame {
 //        final char key = evt.getKeyChar();
         if (!Character.isDigit(evt.getKeyChar())) {
             evt.consume();
-            System.out.println("A FUCKEN LETTER");
             return;
         }
         
