@@ -7,6 +7,7 @@ package finasys.managers;
 
 import finasys.enities.Addresses;
 import finasys.enities.FinaSysEntity;
+import finasys.enities.Staff;
 import finasys.enities.Tincomes;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -89,9 +90,12 @@ public class DatabaseManager {
 
     public List<Tincomes> getTaxRows() {
         return em.createNativeQuery("SELECT * FROM ADMINISTRATOR.TINCOMES", Tincomes.class).getResultList();
-
     }
 
+    public List<Staff> getStaffRows() {
+        return em.createNamedQuery("Staff.findAll", Staff.class).getResultList();
+    }
+    
     public void shutdown() {
         if(em.isOpen()){
             em.close();
