@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package finasys.managers;
+package tools;
 
 import static java.lang.StrictMath.random;
 import java.math.BigInteger;

@@ -1,11 +1,9 @@
 /**
- * TODO Check list:
+ * TODO Check list.
  * 1. AccessManager, do enable disable buttons depending on user level.
  * 1.1 DatabaseManager, set up a database manager to handle the entities from 
- *     the db. - working on it 40% done.
+ *     the db. - working on it 80% done.
  * 2. AddStaff form. [Button - done, Access, DB Link]
- * 3. ListStaff form. (includes remove staff) [Button, Access, DB Link]
- * 4. List Tax incomes form. [Button, Access, DB Link]
  * 4.1. Graph Tax incomes form [Button, Access, DB Link]
  * 4.2. Export Tax incomes - CSV. [Button, Access, DB Link]
  * 5. View expenses, able to sort by vendor ID. [Button, Access, DB Link]
@@ -27,18 +25,20 @@
  * 1.4 Added login by pressing ENTER key
  * 2 Database.
  * 2.1 Table auto-generate IDs.
- * 
+ * 3 User experience.
+ * 3.1 ListStaff form. (includes remove staff) [Button, Access, DB Link]
+ * 3.2 List Tax incomes form. [Button, Access, DB Link]
  * 
  * This project uses the following libraries and frameworks:
  * -> JFreeChart: http://www.jfree.org/jfreechart/ 
  *      API: http://www.jfree.org/jfreechart/api/javadoc/index.html
  * 
- * JCommin (used by JFreeChart): http://www.jfree.org/jcommon/
+ * -> JCommon (used by JFreeChart): http://www.jfree.org/jcommon/
  * 
- * Google Guava: https://github.com/google/guava
+ * -> Google Guava: https://github.com/google/guava
  * 
  * This project (The source-code, and any binaries built from it) 
- * is protected by the GPL (GNU Public License) v3 License. If you are unaware
+ * is protected by the GPL (GNU Public License) Version 3 License. If you are unaware
  * of the terms of the license please find it here: 
  * http://www.gnu.org/licenses/gpl-3.0.en.html
  * 
@@ -125,7 +125,6 @@ public class FinaSys {
      */
     public static boolean login(User user) {
         currentUser = user;
-        
         
         loginWindow.setVisible(false);
         loginWindow.dispose();

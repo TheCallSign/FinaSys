@@ -5,7 +5,18 @@
  */
 package finasys.forms.administration;
 
+import com.google.common.base.Objects;
+import finasys.User;
 import finasys.managers.AccessManager;
+import tools.PasswordUtils;
+import finasys.managers.UserDoesNotExistException;
+import finasys.managers.UserManager;
+import java.beans.PropertyVetoException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,12 +29,15 @@ public class EditUserForm extends javax.swing.JInternalFrame {
      */
     public EditUserForm() {
         initComponents();
+        passwordFld.setText("password");
     }
 
-    public void setDefaults(String username, String password, AccessManager.Level level){
-        
+    private User user;
+
+    public void setUser(User user) {
+        this.user = user;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,7 +47,7 @@ public class EditUserForm extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
+        accessLevelGrp = new javax.swing.ButtonGroup();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         usernameFld = new javax.swing.JTextField();
@@ -52,15 +66,15 @@ public class EditUserForm extends javax.swing.JInternalFrame {
 
         jLabel6.setText("Access Level");
 
-        buttonGroup1.add(jRadioButton4);
+        accessLevelGrp.add(jRadioButton4);
         jRadioButton4.setText("Administrator (view, edit & add/remove users)");
         jRadioButton4.setActionCommand("ADMIN");
 
-        buttonGroup1.add(jRadioButton5);
+        accessLevelGrp.add(jRadioButton5);
         jRadioButton5.setText("Manager (view & edit data)");
         jRadioButton5.setActionCommand("MOD");
 
-        buttonGroup1.add(jRadioButton6);
+        accessLevelGrp.add(jRadioButton6);
         jRadioButton6.setText("User (view only)");
         jRadioButton6.setActionCommand("USER");
 
@@ -151,12 +165,41 @@ public class EditUserForm extends javax.swing.JInternalFrame {
 
     private void updateUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateUserBtnActionPerformed
         // TODO add your handling code here:
+        statueLabel.setText("Updating user...");
+        user.setUsername(usernameFld.getText());
+        user.setAccessLevel(AccessManager.getLevelFromString(
+                accessLevelGrp.getSelection().getActionCommand()));
         
+        if (!Objects.equal(passwordFld.getPassword(), "password".toCharArray())) {
+            try {
+                byte[] salt = PasswordUtils.getSalt();
+                user.setSalt(salt);
+                user.setPassword(PasswordUtils.hash(salt, passwordFld.getPassword()));
+            } catch (InvalidKeySpecException | NoSuchAlgorithmException ex) {
+                Logger.getLogger(AddUserForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        try {
+            UserManager.getInstance().refreshUser(user);
+        } catch (UserDoesNotExistException ex) {
+            Logger.getLogger(EditUserForm.class.getName())
+                    .log(Level.SEVERE, null, "The user doesn't exist. Parhaps "
+                            + "the file has been externally modified?");
+        }
+        try {
+            AdministrationForm.getInstance().setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(AddUserForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        AdministrationForm.getInstance().updateUserList();
+        this.dispose();
+
     }//GEN-LAST:event_updateUserBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup accessLevelGrp;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

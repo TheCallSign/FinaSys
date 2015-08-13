@@ -6,8 +6,9 @@
 package finasys.forms.administration;
 
 import finasys.User;
-import finasys.managers.PasswordUtils;
+import tools.PasswordUtils;
 import finasys.managers.AccessManager;
+import finasys.managers.UsernameAlreadyExistsException;
 import finasys.managers.UserManager;
 import java.beans.PropertyVetoException;
 import java.security.NoSuchAlgorithmException;
@@ -48,7 +49,7 @@ public class AddUserForm extends javax.swing.JInternalFrame {
         jRadioButton2 = new javax.swing.JRadioButton();
         jRadioButton3 = new javax.swing.JRadioButton();
         addUserBtn = new javax.swing.JButton();
-        statueLabel = new javax.swing.JLabel();
+        statusLabel = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
@@ -101,7 +102,7 @@ public class AddUserForm extends javax.swing.JInternalFrame {
                             .addComponent(jRadioButton1)
                             .addComponent(jRadioButton3)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(statueLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(statusLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jRadioButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -133,7 +134,7 @@ public class AddUserForm extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(addUserBtn)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(statueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(statusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -159,7 +160,7 @@ public class AddUserForm extends javax.swing.JInternalFrame {
 
     private void addUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserBtnActionPerformed
         // TODO add your handling code here:
-        statueLabel.setText("Adding user...");
+        statusLabel.setText("Adding user...");
         User user = new User();
         user.setUsername(usernameFld.getText());
         user.setAccessLevel(AccessManager.getLevelFromString(
@@ -171,7 +172,12 @@ public class AddUserForm extends javax.swing.JInternalFrame {
         } catch (InvalidKeySpecException | NoSuchAlgorithmException ex) {
             Logger.getLogger(AddUserForm.class.getName()).log(Level.SEVERE, null, ex);
         }
-        UserManager.getInstance().addUser(user);
+        try {
+            UserManager.getInstance().addUser(user);
+        } catch (UsernameAlreadyExistsException ex) {
+            statusLabel.setText("Username already exists.");
+        }
+        
         try {
             AdministrationForm.getInstance().setSelected(true);
         } catch (PropertyVetoException ex) {
@@ -194,7 +200,7 @@ public class AddUserForm extends javax.swing.JInternalFrame {
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JPasswordField passwordFld;
-    private javax.swing.JLabel statueLabel;
+    private javax.swing.JLabel statusLabel;
     private javax.swing.JTextField usernameFld;
     // End of variables declaration//GEN-END:variables
 }

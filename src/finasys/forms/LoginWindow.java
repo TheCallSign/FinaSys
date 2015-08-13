@@ -9,7 +9,7 @@ import finasys.FinaSys;
 import finasys.User;
 import finasys.managers.AccessManager;
 import finasys.managers.DatabaseManager;
-import finasys.managers.PasswordUtils;
+import tools.PasswordUtils;
 import finasys.managers.UserManager;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
@@ -178,7 +178,7 @@ public class LoginWindow extends javax.swing.JFrame {
             @Override
             public void run() {
                 boolean passwordAccepted = false;
-                for (User user : UserManager.getInstance().getUsers()) {
+                for (User user : UserManager.getInstance().getUsers().values()) {
                     if (user.getUsername().toLowerCase().equals(usernameFld.getText().toLowerCase())) {
                         byte[] hash = null;
                         try {
@@ -213,16 +213,10 @@ public class LoginWindow extends javax.swing.JFrame {
         });
         t.start();
         AccessManager.getInstance().setUserLevel(u.getAccessLevel());
-        checkLoggedIn(FinaSys.login(u));
-
+        FinaSys.login(user);
     }
 
-    // This isn't a joke, I swear.
-    public static final synchronized void checkLoggedIn(boolean b) {
-        statusLbl.setForeground(Color.red);
-        statusLbl.setText("Error connecting to database.");
-        statusLbl.setToolTipText("Error connecting to database. Check log for more details.");
-    }
+    
 
     private void quitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitBtnActionPerformed
         System.exit(0);

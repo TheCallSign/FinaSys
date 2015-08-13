@@ -5,11 +5,14 @@
  */
 package finasys.forms.administration;
 
+import com.google.common.collect.Lists;
 import finasys.forms.administration.AddUserForm;
 import finasys.FinaSys;
 import finasys.User;
 import finasys.managers.UserManager;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
@@ -21,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
 public final class AdministrationForm extends javax.swing.JInternalFrame {
 
     private static AdministrationForm instance;
-
+    private List<UUID> uuids;
     public static AdministrationForm getInstance() {
         if (instance == null) {
             instance = new AdministrationForm();
@@ -33,6 +36,7 @@ public final class AdministrationForm extends javax.swing.JInternalFrame {
      * Creates new form AdministrationForm
      */
     protected AdministrationForm() {
+        this.uuids = Lists.newArrayList();
         initComponents();
 //        TableModel tm = new UserTableModel();
 //        userTable.setModel(tm);
@@ -205,7 +209,7 @@ public final class AdministrationForm extends javax.swing.JInternalFrame {
         String username = (String) userTable.getValueAt(index, 0);
         int option = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove " + username + "?");
         if (option == JOptionPane.YES_OPTION) {
-            UserManager.getInstance().removeUser(index);
+            UserManager.getInstance().removeUser(uuids.get(index));
         }
         updateUserList();
     }//GEN-LAST:event_removeUserBtnActionPerformed
@@ -219,11 +223,22 @@ public final class AdministrationForm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_userTableMouseClicked
 
     private void editUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editUserBtnActionPerformed
-        
+        int index = userTable.getSelectedRow();
+        EditUserForm form = new EditUserForm();
+        form.setUser(UserManager.getInstance().getUsers().get(uuids.get(index)));
+        form.setVisible(true);
+        form.setLocation(FinaSys.centreFrame(form));
+        finasys.MainFrame.getDesktop().add(form);
+        try {
+            form.setSelected(true);
+        } catch (java.beans.PropertyVetoException e) {
+        }
+
     }//GEN-LAST:event_editUserBtnActionPerformed
 
     public void updateUserList() {
-        List<User> users = UserManager.getInstance().getUsers();
+        uuids = Lists.newArrayList(UserManager.getInstance().getUsers().keySet());
+        List<User> users = Lists.newArrayList(UserManager.getInstance().getUsers().values());
         UserTableModel tm = new UserTableModel(users);
         tm.setRowCount(users.size());
         userTable.setModel(tm);

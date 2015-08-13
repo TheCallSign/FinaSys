@@ -9,9 +9,9 @@ package finasys.managers;
  *
  * @author stjohn
  */
-class UserAlreadyExistsException extends Exception {
+public class UserDoesNotExistException extends Exception {
 
-    public UserAlreadyExistsException() {
+    public UserDoesNotExistException() {
     }
     
 }

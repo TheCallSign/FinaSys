@@ -6,6 +6,7 @@
 package finasys;
 
 import finasys.managers.AccessManager.Level;
+import java.util.UUID;
 
 /**
  *
@@ -13,17 +14,29 @@ import finasys.managers.AccessManager.Level;
  */
 public class User implements java.io.Serializable{
 
-    public User(Level accessLevel) {
-        this.accessLevel = accessLevel;
-    }
-    public User() {
-    }
 
-    
     private byte[] password;
     private String username;
     private Level accessLevel;
     private byte[] salt;
+    private final UUID uuid;
+
+    public User(Level accessLevel) {
+        this.accessLevel = accessLevel;
+        uuid = UUID.randomUUID();
+    }
+
+    public User() {
+        uuid = UUID.randomUUID();
+    }
+    
+    public User(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
     
     public byte[] getSalt() {
         return salt;
