@@ -81,6 +81,7 @@ public class ListStaffForm extends javax.swing.JInternalFrame {
         nextPage = new javax.swing.JButton();
         rowsPerScreenTxt = new javax.swing.JTextField();
         firstPage = new javax.swing.JButton();
+        refreshBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -134,6 +135,13 @@ public class ListStaffForm extends javax.swing.JInternalFrame {
             }
         });
 
+        refreshBtn.setText("Refresh");
+        refreshBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -143,7 +151,9 @@ public class ListStaffForm extends javax.swing.JInternalFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(rowsPerScreenTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
+                .addComponent(refreshBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(firstPage, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(prevPage)
@@ -163,7 +173,8 @@ public class ListStaffForm extends javax.swing.JInternalFrame {
                     .addComponent(nextPage)
                     .addComponent(prevPage)
                     .addComponent(lastPage)
-                    .addComponent(firstPage))
+                    .addComponent(firstPage)
+                    .addComponent(refreshBtn))
                 .addContainerGap())
         );
 
@@ -235,6 +246,11 @@ public class ListStaffForm extends javax.swing.JInternalFrame {
         updateTable();
     }//GEN-LAST:event_lastPageActionPerformed
 
+    private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
+        refresh();
+        updateTable();
+    }//GEN-LAST:event_refreshBtnActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton firstPage;
@@ -244,6 +260,7 @@ public class ListStaffForm extends javax.swing.JInternalFrame {
     private javax.swing.JButton lastPage;
     private javax.swing.JButton nextPage;
     private javax.swing.JButton prevPage;
+    private javax.swing.JButton refreshBtn;
     private javax.swing.JTextField rowsPerScreenTxt;
     private javax.swing.JTable taxTable;
     // End of variables declaration//GEN-END:variables
