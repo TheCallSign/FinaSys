@@ -8,6 +8,7 @@ package finasys;
 import finasys.forms.administration.AdministrationForm;
 import finasys.forms.GraphForm;
 import finasys.forms.ViewTaxIncomesForm;
+import finasys.forms.staff.ListStaffForm;
 import finasys.forms.staff.StaffRegistrationForm;
 import finasys.managers.AccessManager;
 import finasys.managers.DatabaseManager;
@@ -165,6 +166,11 @@ public class MainFrame extends javax.swing.JFrame {
         listStaffMembersBtn.setFocusable(false);
         listStaffMembersBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         listStaffMembersBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        listStaffMembersBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listStaffMembersBtnActionPerformed(evt);
+            }
+        });
         controlToolBar.add(listStaffMembersBtn);
 
         jToolBar1.setRollover(true);
@@ -419,6 +425,25 @@ public class MainFrame extends javax.swing.JFrame {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         FinaSys.shutdown();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void listStaffMembersBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listStaffMembersBtnActionPerformed
+         ListStaffForm form = new ListStaffForm();
+        if (form.isVisible()) {
+            try {
+                form.setSelected(true);
+            } catch (java.beans.PropertyVetoException e) {
+            }
+//            af.toFront();
+            return;
+        }
+        desktop.add(form);
+        form.setLocation(FinaSys.centreFrame(form));
+        form.setVisible(true);
+        try {
+            form.setSelected(true);
+        } catch (java.beans.PropertyVetoException e) {
+        }
+    }//GEN-LAST:event_listStaffMembersBtnActionPerformed
 
     /**
      * @param args the command line arguments
