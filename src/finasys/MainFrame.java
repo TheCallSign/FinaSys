@@ -21,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 import tests.Graph;
 import tests.GraphSettings;
 import tests.GraphTest;
@@ -59,9 +60,13 @@ public class MainFrame extends javax.swing.JFrame {
         if (DatabaseManager.getInstance().isConnected()) {
             databaseStatusLbl.setText("Online");
             databaseStatusLbl.setForeground(Color.green);
+            connectBtn.setText("Connected");
+            connectBtn.setEnabled(false);
         } else {
             databaseStatusLbl.setText("Offline");
             databaseStatusLbl.setForeground(Color.red);
+            connectBtn.setText("Connect");
+            connectBtn.setEnabled(true);
         }
         switch (FinaSys.getUser().getAccessLevel()) {
             case ADMIN:
@@ -81,7 +86,6 @@ public class MainFrame extends javax.swing.JFrame {
         dateLbl.setText(df.format(d));
     }
 
-    
     private void startStatusThread() {
         Thread statusBarThread = new Thread(new Runnable() {
 
@@ -120,9 +124,10 @@ public class MainFrame extends javax.swing.JFrame {
         listStaffMembersBtn = new javax.swing.JButton();
         jToolBar1 = new javax.swing.JToolBar();
         jSeparator2 = new javax.swing.JToolBar.Separator();
-        jButton3 = new javax.swing.JButton();
         listTaxIncomeBtn = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
+        jButton3 = new javax.swing.JButton();
+        jSeparator6 = new javax.swing.JToolBar.Separator();
         adminBtn = new javax.swing.JButton();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         jPanel2 = new javax.swing.JPanel();
@@ -136,6 +141,7 @@ public class MainFrame extends javax.swing.JFrame {
         accessLvlLbl = new javax.swing.JLabel();
         jSeparator5 = new javax.swing.JSeparator();
         dateLbl = new javax.swing.JLabel();
+        connectBtn = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         logoutMenuBtn = new javax.swing.JMenuItem();
@@ -177,17 +183,6 @@ public class MainFrame extends javax.swing.JFrame {
         controlToolBar.add(jToolBar1);
         controlToolBar.add(jSeparator2);
 
-        jButton3.setText("Example Graph");
-        jButton3.setFocusable(false);
-        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-        controlToolBar.add(jButton3);
-
         listTaxIncomeBtn.setText("List Tax");
         listTaxIncomeBtn.setFocusable(false);
         listTaxIncomeBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -199,6 +194,18 @@ public class MainFrame extends javax.swing.JFrame {
         });
         controlToolBar.add(listTaxIncomeBtn);
         controlToolBar.add(jSeparator1);
+
+        jButton3.setText("Report");
+        jButton3.setFocusable(false);
+        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        controlToolBar.add(jButton3);
+        controlToolBar.add(jSeparator6);
 
         adminBtn.setText("Administration");
         adminBtn.setFocusable(false);
@@ -218,7 +225,7 @@ public class MainFrame extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(controlToolBar, javax.swing.GroupLayout.DEFAULT_SIZE, 709, Short.MAX_VALUE)
+                .addComponent(controlToolBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -249,58 +256,78 @@ public class MainFrame extends javax.swing.JFrame {
         dateLbl.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         dateLbl.setText("TIME");
 
+        connectBtn.setText("Connect");
+        connectBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                connectBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(8, 8, 8)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(6, 6, 6)
                 .addComponent(userLbl)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addComponent(databaseStatusLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(14, 14, 14)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jLabel2))
+                    .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(13, 13, 13)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(connectBtn))
+                    .addComponent(databaseStatusLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
                 .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
+                .addGap(7, 7, 7)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(12, 12, 12)
                 .addComponent(accessLvlLbl)
-                .addGap(18, 18, 18)
+                .addGap(15, 15, 15)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(dateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(28, 28, 28)
+                .addComponent(dateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(8, 8, 8)
+                .addComponent(jLabel1))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(8, 8, 8)
+                .addComponent(userLbl))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(8, 8, 8)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator4)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jSeparator5)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(databaseStatusLbl))
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel1)
-                                .addComponent(userLbl))
-                            .addComponent(jSeparator3)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel3)
-                                .addComponent(accessLvlLbl))
-                            .addComponent(dateLbl))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                    .addComponent(jLabel2)
+                    .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(8, 8, 8)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(connectBtn)
+                    .addComponent(databaseStatusLbl)))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(8, 8, 8)
+                .addComponent(jLabel3))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(8, 8, 8)
+                .addComponent(accessLvlLbl))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addComponent(dateLbl))
         );
 
         javax.swing.GroupLayout desktopLayout = new javax.swing.GroupLayout(desktop);
@@ -314,7 +341,7 @@ public class MainFrame extends javax.swing.JFrame {
             desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(desktopLayout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 192, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 194, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         desktop.setLayer(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -427,7 +454,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void listStaffMembersBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listStaffMembersBtnActionPerformed
-         ListStaffForm form = new ListStaffForm();
+        ListStaffForm form = new ListStaffForm();
         if (form.isVisible()) {
             try {
                 form.setSelected(true);
@@ -445,6 +472,25 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_listStaffMembersBtnActionPerformed
 
+    private void connectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectBtnActionPerformed
+        connectBtn.setText("Connecting");
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                if (!DatabaseManager.getInstance().isConnected()) {
+
+                    if (DatabaseManager.getInstance().connect()) {
+                        connectBtn.setText("Connected");
+                        connectBtn.setEnabled(false);
+                        connectBtn.setSelected(false);
+                    }
+                }
+            }
+        });
+
+    }//GEN-LAST:event_connectBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -453,6 +499,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel accessLvlLbl;
     private javax.swing.JButton addStaffBtn;
     private javax.swing.JButton adminBtn;
+    private volatile javax.swing.JButton connectBtn;
     private javax.swing.JToolBar controlToolBar;
     private javax.swing.JLabel databaseStatusLbl;
     private javax.swing.JLabel dateLbl;
@@ -474,6 +521,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JToolBar.Separator jSeparator6;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JButton listStaffMembersBtn;
     private javax.swing.JButton listTaxIncomeBtn;
