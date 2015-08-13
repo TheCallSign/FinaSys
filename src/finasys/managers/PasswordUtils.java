@@ -28,8 +28,6 @@ public class PasswordUtils {
         KeySpec spec = new PBEKeySpec(clearText, salt, 65536, 128);
         SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
         byte[] hash = f.generateSecret(spec).getEncoded();
-//        System.out.println("salt: " + new BigInteger(1, salt).toString(16));
-//        System.out.println("hash: " + new BigInteger(1, hash).toString(16));
         return hash;
     }
     
