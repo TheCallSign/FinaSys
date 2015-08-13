@@ -111,10 +111,31 @@ public class UserManager {
     /**
      * Add a user to the array of user able to access FinaSys, and save to file.
      * @param user User to add 
+     * @throws finasys.managers.UserAlreadyExistsException Thrown if the user already exists.
      */
-    public void addUser(User user) {
+    public void addUser(User user) throws UserAlreadyExistsException {
+        for(User u : users) {
+            if(u.getUsername().equals(user.getUsername())){
+                throw new UserAlreadyExistsException();
+            }
+        }
         users.add(user);
         saveUsers();
+    }
+    
+    /**
+     * Refresh a user's details.
+     * @param user User to update
+     */
+    public void refreshUser(User user) {
+        for(User u : users) {
+            if(u.getUsername().equals(user.getUsername())){
+                users.remove(u);
+                users.add(user);
+                return;
+            }
+        }
+        // If the program gets here the user doesn't exist.
     }
 
     /**
