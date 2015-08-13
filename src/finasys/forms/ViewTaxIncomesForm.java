@@ -34,6 +34,7 @@ public final class ViewTaxIncomesForm extends javax.swing.JInternalFrame {
 
     private List<Tincomes> taxes;
     private int min = 0, max, pageCounter = 1, pageCounterLimit;
+    private final int maxRows = 100;
 
     /**
      * Creates new form ViewTaxIncomesForm
@@ -207,8 +208,8 @@ public final class ViewTaxIncomesForm extends javax.swing.JInternalFrame {
             @Override
             public void run() {
                 int rowsPerScreen = Integer.parseInt(rowsPerScreenTxt.getText());
-                if (rowsPerScreen > taxes.size()) {
-                    rowsPerScreenTxt.setText(taxes.size() + "");
+                if (rowsPerScreen > maxRows) {
+                    rowsPerScreenTxt.setText(maxRows + "");
                 }
             }
         });
