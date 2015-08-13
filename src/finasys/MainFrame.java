@@ -36,10 +36,13 @@ public class MainFrame extends javax.swing.JFrame {
         return desktop;
     }
 
+    DateFormat dateFormat;
+
     /**
      * Creates new form FinacSysMain
      */
     public MainFrame() {
+        this.dateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM);
         initComponents();
         setLocationRelativeTo(null);
         setContentPane(desktop);
@@ -82,8 +85,7 @@ public class MainFrame extends javax.swing.JFrame {
                 accessLvlLbl.setForeground(Color.green);
         }
         Date d = Calendar.getInstance().getTime();
-        DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM);
-        dateLbl.setText(df.format(d));
+        dateLbl.setText(dateFormat.format(d));
     }
 
     private void startStatusThread() {
@@ -292,7 +294,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(accessLvlLbl)
                 .addGap(15, 15, 15)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addComponent(dateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel2Layout.setVerticalGroup(

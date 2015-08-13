@@ -281,7 +281,7 @@
                       <Component id="accessLvlLbl" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="15" pref="15" max="-2" attributes="0"/>
                       <Component id="jSeparator4" min="-2" pref="23" max="-2" attributes="0"/>
-                      <EmptySpace min="28" pref="28" max="-2" attributes="0"/>
+                      <EmptySpace pref="28" max="32767" attributes="0"/>
                       <Component id="dateLbl" min="-2" pref="161" max="-2" attributes="0"/>
                   </Group>
               </Group>
