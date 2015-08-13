@@ -5,6 +5,13 @@
  */
 package finasys.forms.staff;
 
+import finasys.enities.Staff;
+import finasys.enities.Tincomes;
+import finasys.forms.ViewTaxIncomesForm;
+import finasys.managers.DatabaseManager;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author stjohn
@@ -16,6 +23,44 @@ public class ListStaffForm extends javax.swing.JInternalFrame {
      */
     public ListStaffForm() {
         initComponents();
+        this.setTitle("Staff");
+        refresh();
+        updateTable();
+    }
+    private List<Staff> staffList;
+    private int min = 0, max, pageCounter = 1, pageCounterLimit;
+    private final int maxRows = 100;
+
+    private void refresh(){
+        staffList = DatabaseManager.getInstance().getStaffRows();
+        updateTable();
+    }
+    
+    private void updateTable() {
+        if (rowsPerScreenTxt.getText().isEmpty()) {
+            rowsPerScreenTxt.setText("20");
+        }
+        int rowsPerScreen = Integer.parseInt(rowsPerScreenTxt.getText());
+        int maxSize = staffList.size();
+        int a = maxSize / rowsPerScreen;
+        pageCounterLimit = a == 0 ? a : a + 1;
+        if (pageCounter < 1) {
+            pageCounter = 1;
+        }
+        if (pageCounterLimit < pageCounter) {
+            pageCounter = pageCounterLimit;
+        }
+        max = rowsPerScreen * pageCounter;
+        min = rowsPerScreen * (pageCounter - 1);
+        if (max > maxSize) {
+            max = min + (maxSize % rowsPerScreen);
+        }
+        StaffTableModel tm = new StaffTableModel(staffList.subList(min, max));
+        tm.setRowCount(tm.getSize());
+
+//        tm.newDataAvailable(new TableModelEvent(tm));
+        taxTable.setModel(tm);
+
     }
 
     /**
@@ -27,24 +72,216 @@ public class ListStaffForm extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        taxTable = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        lastPage = new javax.swing.JButton();
+        prevPage = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        nextPage = new javax.swing.JButton();
+        rowsPerScreenTxt = new javax.swing.JTextField();
+        firstPage = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        taxTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(taxTable);
+
+        lastPage.setText(">>");
+        lastPage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lastPageActionPerformed(evt);
+            }
+        });
+
+        prevPage.setText("<");
+        prevPage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                prevPageActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Rows per screen:");
+
+        nextPage.setText(">");
+        nextPage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextPageActionPerformed(evt);
+            }
+        });
+
+        rowsPerScreenTxt.setText("20");
+        rowsPerScreenTxt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                rowsPerScreenTxtKeyPressed(evt);
+            }
+        });
+
+        firstPage.setText("<<");
+        firstPage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                firstPageActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rowsPerScreenTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
+                .addComponent(firstPage, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(prevPage)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(nextPage, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lastPage, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(rowsPerScreenTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nextPage)
+                    .addComponent(prevPage)
+                    .addComponent(lastPage)
+                    .addComponent(firstPage))
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(15, 15, 15)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
+                    .addGap(16, 16, 16)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(381, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(5, 5, 5)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(54, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-   
+    private void rowsPerScreenTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rowsPerScreenTxtKeyPressed
+        //        final char key = evt.getKeyChar();
+        if (!Character.isDigit(evt.getKeyChar())) {
+            evt.consume();
+            return;
+        }
+
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                int rowsPerScreen = Integer.parseInt(rowsPerScreenTxt.getText());
+                if (rowsPerScreen > maxRows) {
+                    rowsPerScreenTxt.setText(maxRows + "");
+                }
+            }
+        });
+    }//GEN-LAST:event_rowsPerScreenTxtKeyPressed
+
+    private void firstPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstPageActionPerformed
+        pageCounter = 1;
+        updateTable();
+    }//GEN-LAST:event_firstPageActionPerformed
+
+    private void prevPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevPageActionPerformed
+        pageCounter--;
+        updateTable();
+    }//GEN-LAST:event_prevPageActionPerformed
+
+    private void nextPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextPageActionPerformed
+        pageCounter++;
+        updateTable();
+    }//GEN-LAST:event_nextPageActionPerformed
+
+    private void lastPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastPageActionPerformed
+        pageCounter = pageCounterLimit;
+        updateTable();
+    }//GEN-LAST:event_lastPageActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton firstPage;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton lastPage;
+    private javax.swing.JButton nextPage;
+    private javax.swing.JButton prevPage;
+    private javax.swing.JTextField rowsPerScreenTxt;
+    private javax.swing.JTable taxTable;
     // End of variables declaration//GEN-END:variables
+    private static class StaffTableModel extends DefaultTableModel {
+
+        private final String[] columnNames = {"Staff ID", "Full Name", "Contact Number"};
+        private final Object[][] data;
+
+        public StaffTableModel(List<Staff> staff) {
+            if (staff == null || staff.isEmpty()) { // NULL CHECK 
+                data = new Object[][]{};
+                return;
+            }
+            data = new Object[staff.size()][3];
+            for (int i = 0; i < staff.size(); i++) {
+                data[i][0] = staff.get(i).getStaffid();
+                data[i][1] = staff.get(i).getFname() + staff.get(i).getSname();
+                data[i][2] = staff.get(i).getContact();
+            }
+        }
+
+        @Override
+        public String getColumnName(int col) {
+            return columnNames[col];
+        }
+
+        @Override
+        public int getColumnCount() {
+            return columnNames.length;
+        }
+
+        @Override
+        public Object getValueAt(int row, int col) {
+            return data[row][col];
+        }
+
+        public int getSize() {
+            return data.length;
+        }
+    }
 }
