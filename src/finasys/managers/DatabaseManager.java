@@ -89,7 +89,7 @@ public class DatabaseManager {
     }
 
     public List<Tincomes> getTaxRows() {
-        return em.createNativeQuery("SELECT * FROM ADMINISTRATOR.TINCOMES", Tincomes.class).getResultList();
+        return em.createNamedQuery("Tincomes.findAll", Tincomes.class).getResultList();
     }
 
     public List<Staff> getStaffRows() {
