@@ -42,15 +42,20 @@ public final class ViewTaxIncomesForm extends javax.swing.JInternalFrame {
     public ViewTaxIncomesForm() {
         initComponents();
         this.setTitle("Taxes");
+        refresh();
         updateTable();
     }
 
+    public void refresh(){
+        taxes = DatabaseManager.getInstance().getTaxRows();
+        updateTable();
+    }
+    
     public void updateTable() {
         if(rowsPerScreenTxt.getText().isEmpty()) {
             rowsPerScreenTxt.setText("20");
         }
         int rowsPerScreen = Integer.parseInt(rowsPerScreenTxt.getText());
-        taxes = DatabaseManager.getInstance().getTaxRows();
         int maxSize = taxes.size();
         int a = maxSize / rowsPerScreen;
         pageCounterLimit = a == 0 ? a : a + 1;
@@ -90,6 +95,7 @@ public final class ViewTaxIncomesForm extends javax.swing.JInternalFrame {
         prevPage = new javax.swing.JButton();
         lastPage = new javax.swing.JButton();
         firstPage = new javax.swing.JButton();
+        refreshButton = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -144,6 +150,13 @@ public final class ViewTaxIncomesForm extends javax.swing.JInternalFrame {
             }
         });
 
+        refreshButton.setText("Refresh");
+        refreshButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -159,6 +172,8 @@ public final class ViewTaxIncomesForm extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(rowsPerScreenTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(refreshButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(firstPage, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(prevPage)
@@ -180,8 +195,9 @@ public final class ViewTaxIncomesForm extends javax.swing.JInternalFrame {
                     .addComponent(nextPage)
                     .addComponent(prevPage)
                     .addComponent(lastPage)
-                    .addComponent(firstPage))
-                .addContainerGap(16, Short.MAX_VALUE))
+                    .addComponent(firstPage)
+                    .addComponent(refreshButton))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pack();
@@ -224,6 +240,10 @@ public final class ViewTaxIncomesForm extends javax.swing.JInternalFrame {
         pageCounter = pageCounterLimit;
         updateTable();
     }//GEN-LAST:event_lastPageActionPerformed
+
+    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
+        refresh();
+    }//GEN-LAST:event_refreshButtonActionPerformed
 
     
     
@@ -272,6 +292,7 @@ public final class ViewTaxIncomesForm extends javax.swing.JInternalFrame {
     private javax.swing.JButton lastPage;
     private javax.swing.JButton nextPage;
     private javax.swing.JButton prevPage;
+    private javax.swing.JButton refreshButton;
     private javax.swing.JTextField rowsPerScreenTxt;
     private javax.swing.JTable taxTable;
     // End of variables declaration//GEN-END:variables
