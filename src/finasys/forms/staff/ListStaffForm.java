@@ -6,8 +6,6 @@
 package finasys.forms.staff;
 
 import finasys.enities.Staff;
-import finasys.enities.Tincomes;
-import finasys.forms.ViewTaxIncomesForm;
 import finasys.managers.DatabaseManager;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -83,7 +81,9 @@ public class ListStaffForm extends javax.swing.JInternalFrame {
         firstPage = new javax.swing.JButton();
         refreshBtn = new javax.swing.JButton();
 
+        setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Staff Members");
 
         taxTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
