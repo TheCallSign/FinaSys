@@ -219,6 +219,8 @@ public class LoginWindow extends javax.swing.JFrame {
     
 
     private void quitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitBtnActionPerformed
+        // Make sure everything is shutdown correctly
+        FinaSys.shutdown();
         System.exit(0);
     }//GEN-LAST:event_quitBtnActionPerformed
 
