@@ -14,7 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import org.apache.derby.client.am.Connection;
+import javax.persistence.Query;
 
 /**
  *
@@ -23,9 +23,6 @@ import org.apache.derby.client.am.Connection;
 public class DatabaseManager {
 
     private static DatabaseManager instance;
-    
-    private EntityManagerFactory emf;
-    private EntityManager em;
 
     public static DatabaseManager getInstance() {
         if (instance == null) {
@@ -36,15 +33,20 @@ public class DatabaseManager {
         }
     }
 
+    private EntityManagerFactory emf;
+    private EntityManager em;
+
     protected DatabaseManager() {
     }
 
     public boolean isConnected() {
         return emf != null && em != null;
     }
+
     /**
      * Connect to the database.
-     * @return True on successful connection, false on fail. 
+     *
+     * @return True on successful connection, false on fail.
      */
     public boolean connect() {
         emf = Persistence.createEntityManagerFactory("FinaSysPU");
@@ -69,7 +71,7 @@ public class DatabaseManager {
     }
 
     public List<Addresses> getAddressRows() {
-        return em.createNativeQuery("SELECT * FROM ADMINISTRATOR.ADDRESSES", Addresses.class).getResultList();
+        return em.createNamedQuery("Addresses.findAll", Addresses.class).getResultList();
     }
 
     public void insert(FinaSysEntity entity) {
@@ -95,12 +97,28 @@ public class DatabaseManager {
     public List<Staff> getStaffRows() {
         return em.createNamedQuery("Staff.findAll", Staff.class).getResultList();
     }
-    
+
+    /**
+     * Use a named query to get results.
+     *
+     * @param type
+     * @param value
+     * @return Query results.
+     */
+    public List<Staff> getStaffSimilar(String type, String value) {
+        System.out.println("SELECT * FROM ADMINISTRATOR.STAFF WHERE " + type + " like '" + value + "%'");
+        Query q = em.createNativeQuery("SELECT * FROM ADMINISTRATOR.STAFF WHERE " + type + " like '" + value + "%'", Staff.class);
+        return q.getResultList();
+    }
+
     public void shutdown() {
-        if(em.isOpen()){
+        if (em == null || emf == null) {
+            return;
+        }
+        if (em.isOpen()) {
             em.close();
         }
-        if(emf.isOpen()){
+        if (emf.isOpen()) {
             emf.close();
         }
 
