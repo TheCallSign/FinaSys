@@ -5,24 +5,21 @@
  */
 package finasys.managers;
 
-import tools.PasswordUtils;
 import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 import finasys.User;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import tools.PasswordUtils;
 
 /**
  *
