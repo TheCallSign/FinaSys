@@ -25,6 +25,7 @@ public final class AdministrationForm extends javax.swing.JInternalFrame {
 
     private static AdministrationForm instance;
     private List<UUID> uuids;
+
     public static AdministrationForm getInstance() {
         if (instance == null) {
             instance = new AdministrationForm();
@@ -143,6 +144,14 @@ public final class AdministrationForm extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        userTable.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                userTableFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                userTableFocusLost(evt);
+            }
+        });
         userTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 userTableMouseClicked(evt);
@@ -235,6 +244,15 @@ public final class AdministrationForm extends javax.swing.JInternalFrame {
         }
 
     }//GEN-LAST:event_editUserBtnActionPerformed
+
+    private void userTableFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userTableFocusLost
+        removeUserBtn.setEnabled(false);
+        editUserBtn.setEnabled(false);
+    }//GEN-LAST:event_userTableFocusLost
+
+    private void userTableFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userTableFocusGained
+        userTableMouseClicked(null);
+    }//GEN-LAST:event_userTableFocusGained
 
     public void updateUserList() {
         uuids = Lists.newArrayList(UserManager.getInstance().getUsers().keySet());
