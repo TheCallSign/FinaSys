@@ -5,7 +5,9 @@
  */
 package finasys.forms.staff;
 
+import finasys.FinaSys;
 import finasys.enities.Staff;
+import finasys.forms.administration.AdministrationForm;
 import finasys.managers.DatabaseManager;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -57,7 +59,7 @@ public class ListStaffForm extends javax.swing.JInternalFrame {
         tm.setRowCount(tm.getSize());
 
 //        tm.newDataAvailable(new TableModelEvent(tm));
-        taxTable.setModel(tm);
+        staffTable.setModel(tm);
 
     }
 
@@ -71,7 +73,7 @@ public class ListStaffForm extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        taxTable = new javax.swing.JTable();
+        staffTable = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         lastPage = new javax.swing.JButton();
         prevPage = new javax.swing.JButton();
@@ -80,12 +82,14 @@ public class ListStaffForm extends javax.swing.JInternalFrame {
         rowsPerScreenTxt = new javax.swing.JTextField();
         firstPage = new javax.swing.JButton();
         refreshBtn = new javax.swing.JButton();
+        removeStaffMember = new javax.swing.JButton();
+        searchBtn = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Staff Members");
 
-        taxTable.setModel(new javax.swing.table.DefaultTableModel(
+        staffTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -96,7 +100,7 @@ public class ListStaffForm extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(taxTable);
+        jScrollPane1.setViewportView(staffTable);
 
         lastPage.setText(">>");
         lastPage.addActionListener(new java.awt.event.ActionListener() {
@@ -142,6 +146,15 @@ public class ListStaffForm extends javax.swing.JInternalFrame {
             }
         });
 
+        removeStaffMember.setText("Remove");
+
+        searchBtn.setText("Search");
+        searchBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -151,7 +164,11 @@ public class ListStaffForm extends javax.swing.JInternalFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(rowsPerScreenTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(searchBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(removeStaffMember)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(refreshBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(firstPage, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -174,7 +191,9 @@ public class ListStaffForm extends javax.swing.JInternalFrame {
                     .addComponent(prevPage)
                     .addComponent(lastPage)
                     .addComponent(firstPage)
-                    .addComponent(refreshBtn))
+                    .addComponent(refreshBtn)
+                    .addComponent(removeStaffMember)
+                    .addComponent(searchBtn))
                 .addContainerGap())
         );
 
@@ -189,7 +208,7 @@ public class ListStaffForm extends javax.swing.JInternalFrame {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(15, 15, 15)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 592, Short.MAX_VALUE)
                     .addGap(16, 16, 16)))
         );
         layout.setVerticalGroup(
@@ -251,6 +270,24 @@ public class ListStaffForm extends javax.swing.JInternalFrame {
         updateTable();
     }//GEN-LAST:event_refreshBtnActionPerformed
 
+    private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
+        StaffSearchForm form = StaffSearchForm.getInstance();
+        if (form.isVisible()) {
+            try {
+                form.setSelected(true);
+            } catch (java.beans.PropertyVetoException e) {
+            }
+            return;
+        }
+        FinaSys.getDesktop().add(form);
+        form.setLocation(FinaSys.centreFrame(form));
+        form.setVisible(true);
+        try {
+            form.setSelected(true);
+        } catch (java.beans.PropertyVetoException e) {
+        }
+    }//GEN-LAST:event_searchBtnActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton firstPage;
@@ -261,44 +298,10 @@ public class ListStaffForm extends javax.swing.JInternalFrame {
     private javax.swing.JButton nextPage;
     private javax.swing.JButton prevPage;
     private javax.swing.JButton refreshBtn;
+    private javax.swing.JButton removeStaffMember;
     private javax.swing.JTextField rowsPerScreenTxt;
-    private javax.swing.JTable taxTable;
+    private javax.swing.JButton searchBtn;
+    private javax.swing.JTable staffTable;
     // End of variables declaration//GEN-END:variables
-    private static class StaffTableModel extends DefaultTableModel {
-
-        private final String[] columnNames = {"Staff ID", "Full Name", "Contact Number"};
-        private final Object[][] data;
-
-        public StaffTableModel(List<Staff> staff) {
-            if (staff == null || staff.isEmpty()) { // NULL CHECK 
-                data = new Object[][]{};
-                return;
-            }
-            data = new Object[staff.size()][3];
-            for (int i = 0; i < staff.size(); i++) {
-                data[i][0] = staff.get(i).getStaffid();
-                data[i][1] = staff.get(i).getFname() + staff.get(i).getSname();
-                data[i][2] = staff.get(i).getContact();
-            }
-        }
-
-        @Override
-        public String getColumnName(int col) {
-            return columnNames[col];
-        }
-
-        @Override
-        public int getColumnCount() {
-            return columnNames.length;
-        }
-
-        @Override
-        public Object getValueAt(int row, int col) {
-            return data[row][col];
-        }
-
-        public int getSize() {
-            return data.length;
-        }
-    }
+    
 }
