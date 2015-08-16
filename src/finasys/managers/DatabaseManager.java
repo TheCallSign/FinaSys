@@ -124,4 +124,11 @@ public class DatabaseManager {
 
     }
 
+    public void removeEntity(Object entity) {
+        EntityTransaction trans = em.getTransaction();
+        trans.begin();
+        em.remove(entity);
+        trans.commit();
+    }
+
 }
