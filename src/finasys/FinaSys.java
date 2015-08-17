@@ -1,28 +1,46 @@
-/**
- * TODO Check list. 1. AccessManager, do enable disable buttons depending on
- * user level. 1.1 DatabaseManager, set up a database manager to handle the
- * entities from the db. - working on it 80% done. 2. AddStaff form. [Button -
- * done, Access, DB Link] 4.1. Graph Tax incomes form [Button, Access, DB Link]
- * 4.2. Export Tax incomes - CSV. [Button, Access, DB Link] 5. View expenses,
- * able to sort by vendor ID. [Button, Access, DB Link] 5.1. View upcoming
- * expenses and contract renewals 6.1 View vendors 7.1 ADD CONTENT TO THE
- * DATABASE. 8. Add user edit form (FinaSys user, not database) change password
+/*
+ * *** TODO *** 
+ * 1. AccessManager, do enable disable buttons depending on
+ * user level. 
+ * 1.1 DatabaseManager, set up a database manager to handle the
+ * entities from the db. - working on it 80% done. 
+ * 2. AddStaff form. [Button -
+ * done, Access, DB Link] 
+ * 4.1. Graph Tax incomes form [Button, Access, DB Link]
+ * 4.2. Export Tax incomes - CSV. [Button, Access, DB Link] 
+ * 5. View expenses,
+ * able to sort by vendor ID. [Button, Access, DB Link] 
+ * 5.1. View upcoming
+ * expenses and contract renewals 
+ * 6.1 View vendors 7.1 ADD CONTENT TO THE
+ * DATABASE. 
+ * 8. Add user edit form (FinaSys user, not database) change password
  * and user access level.
  *
  *
  * COMPLETED (features available so far):
  *
- * 1. Login. 1.1 Multi-user login, ability to add users, remove them. 1.2
- * Passwords are hashed and salted, good luck brute-forcing! 1.3 If the
- * users.dat file is not found, create an admin user, with default password
- * "admin". 1.4 Added login by pressing ENTER key 2 Database. 2.1 Table
- * auto-generate IDs. 3 User experience. 3.1 ListStaff form. (includes remove
+ * 1. Login. 
+ * 1.1 Multi-user login, ability to add users, remove them. 
+ * 1.2 Passwords are hashed and salted, good luck brute-forcing! 
+ * 1.3 If the users.dat file is not found, create an admin user, with default password
+ *      "admin". 
+ * 1.4 Added login by pressing ENTER key 
+ * 2 Database. 
+ * 2.1 Table auto-generate IDs. 3 User experience. 3.1 ListStaff form. (includes remove
  * staff) [Button, Access, DB Link] 3.2 List Tax incomes form. [Button, Access,
  * DB Link]
  *
- * This project uses the following libraries and frameworks: -> JFreeChart:
- * http://www.jfree.org/jfreechart/ API:
- * http://www.jfree.org/jfreechart/api/javadoc/index.html
+ * *** IMPORTANT: PLEASE NOTE ***
+ * 
+ * This program starts the Java Derby server internally, so do not start the
+ * server in Netbeans (or the port will be taken and the program will complain).
+ * 
+ * *** 
+ * This project uses the following libraries and frameworks: 
+ * -> JFreeChart:
+ *      http://www.jfree.org/jfreechart/ API:
+ *      http://www.jfree.org/jfreechart/api/javadoc/index.html
  *
  * -> JCommon (used by JFreeChart): http://www.jfree.org/jcommon/
  *
@@ -48,7 +66,6 @@ import java.util.Objects;
 import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
-import org.apache.derby.drda.NetworkServerControl;
 
 /**
  *
@@ -171,6 +188,11 @@ public class FinaSys {
         }
     }
 
+    /**
+     * Returns a boolean representing the state of the program.
+     *
+     * @return True if the program is shutting down, false otherwise.
+     */
     public static boolean isStopped() {
         return stopped;
     }
@@ -186,8 +208,8 @@ public class FinaSys {
     }
 
     /**
-     * Entry Method. Initialize managers, initialize the login window, set
-     * userlevel to NONE (ie: no user logged in).
+     * Entry Method. Start the derby server, initialize managers, initialize the
+     * login window, set userlevel to NONE (ie: no user logged in).
      *
      * @param args
      */
