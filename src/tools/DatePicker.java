@@ -15,7 +15,7 @@ import org.jfree.ui.DateChooserPanel;
 public class DatePicker extends javax.swing.JFrame {
 
     DateChooserPanel dateChooserPanel = new DateChooserPanel();
-    Method disposeMethod;
+
     /**
      * Creates new form DatePicker
      */
@@ -27,8 +27,10 @@ public class DatePicker extends javax.swing.JFrame {
         this.repaint();
         
     }
-    
-    
+     
+    public DateChooserPanel getDateChooserPnl(){
+        return dateChooserPanel;
+    }
     @Override
     public void dispose(){
         super.dispose();
