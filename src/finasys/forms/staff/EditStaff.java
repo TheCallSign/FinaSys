@@ -7,14 +7,14 @@ package finasys.forms.staff;
 
 /**
  *
- * @author giddyc
+ * @author stjohn
  */
-public class StaffRegistrationForm extends javax.swing.JInternalFrame {
+public class EditStaff extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form StaffRegistrationFrame
+     * Creates new form EditStaff
      */
-    public StaffRegistrationForm() {
+    public EditStaff() {
         initComponents();
     }
 
@@ -27,31 +27,15 @@ public class StaffRegistrationForm extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-
-        setClosable(true);
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setIconifiable(true);
-        setTitle("Staff Registration");
-
-        jButton1.setFont(new java.awt.Font("Trebuchet MS", 0, 11)); // NOI18N
-        jButton1.setText("Register");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(294, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(35, 35, 35))
+            .addGap(0, 394, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(382, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(33, 33, 33))
+            .addGap(0, 274, Short.MAX_VALUE)
         );
 
         pack();
@@ -59,6 +43,5 @@ public class StaffRegistrationForm extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     // End of variables declaration//GEN-END:variables
 }

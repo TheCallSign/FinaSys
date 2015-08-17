@@ -6,7 +6,6 @@
 package finasys.forms.staff;
 
 import finasys.enities.Staff;
-import finasys.forms.administration.AdministrationForm;
 import finasys.managers.DatabaseManager;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -111,6 +110,7 @@ public class StaffSearchForm extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        staffTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(staffTable);
 
         searchTxt.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -152,6 +152,11 @@ public class StaffSearchForm extends javax.swing.JInternalFrame {
         editBtn.setText("Edit");
 
         removeBtn.setText("Remove");
+        removeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeBtnActionPerformed(evt);
+            }
+        });
 
         addressBtn.setText("Show Address");
 
@@ -165,7 +170,7 @@ public class StaffSearchForm extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addComponent(removeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(addressBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(addressBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -207,6 +212,12 @@ public class StaffSearchForm extends javax.swing.JInternalFrame {
     private void searchByCmbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchByCmbActionPerformed
         searchType = searchTypes[searchByCmb.getSelectedIndex()];
     }//GEN-LAST:event_searchByCmbActionPerformed
+
+    private void removeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeBtnActionPerformed
+        Staff staff  = staffList.get(staffTable.getSelectedRow());
+        DatabaseManager.getInstance().removeEntity(staff);
+        refresh();
+    }//GEN-LAST:event_removeBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
