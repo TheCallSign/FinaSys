@@ -106,7 +106,6 @@ public class DatabaseManager {
      * @return Query results.
      */
     public List<Staff> getStaffSimilar(String type, String value) {
-        System.out.println("SELECT * FROM ADMINISTRATOR.STAFF WHERE " + type + " like '" + value + "%'");
         Query q = em.createNativeQuery("SELECT * FROM ADMINISTRATOR.STAFF WHERE " + type + " like '" + value + "%'", Staff.class);
         return q.getResultList();
     }
@@ -129,6 +128,11 @@ public class DatabaseManager {
         trans.begin();
         em.remove(entity);
         trans.commit();
+    }
+
+    public List<Addresses> getAddressSimilar(String type, String value) {
+        Query q = em.createNativeQuery("SELECT * FROM ADMINISTRATOR.ADDRESSES WHERE " + type + " like '" + value + "%'", Addresses.class);
+        return q.getResultList();
     }
 
 }
