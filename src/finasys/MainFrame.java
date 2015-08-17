@@ -6,10 +6,9 @@
 package finasys;
 
 import finasys.forms.administration.AdministrationForm;
-import finasys.forms.GraphForm;
+import finasys.forms.report.GraphForm;
 import finasys.forms.ViewTaxIncomesForm;
 import finasys.forms.staff.ListStaffForm;
-import finasys.forms.staff.StaffRegistrationForm;
 import finasys.managers.AccessManager;
 import finasys.managers.DatabaseManager;
 import java.awt.Color;
@@ -149,6 +148,8 @@ public class MainFrame extends javax.swing.JFrame {
         dateLbl = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
         logoutMenuBtn = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
@@ -171,6 +172,11 @@ public class MainFrame extends javax.swing.JFrame {
         addStaffBtn.setFocusable(false);
         addStaffBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         addStaffBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        addStaffBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addStaffBtnActionPerformed(evt);
+            }
+        });
         controlToolBar.add(addStaffBtn);
 
         listStaffMembersBtn.setText("List Staff Members");
@@ -315,6 +321,10 @@ public class MainFrame extends javax.swing.JFrame {
 
         fileMenu.setText("File");
 
+        jMenuItem2.setText("Search Staff");
+        fileMenu.add(jMenuItem2);
+        fileMenu.add(jSeparator3);
+
         logoutMenuBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
         logoutMenuBtn.setText("Logout");
         logoutMenuBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -325,7 +335,7 @@ public class MainFrame extends javax.swing.JFrame {
         fileMenu.add(logoutMenuBtn);
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem1.setText("Logout & Quit FinaSys");
+        jMenuItem1.setText("Quit FinaSys");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
@@ -457,6 +467,10 @@ public class MainFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_connectBtnActionPerformed
 
+    private void addStaffBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStaffBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addStaffBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -482,10 +496,12 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JToolBar.Separator jSeparator6;
     private javax.swing.JToolBar.Separator jSeparator7;
     private javax.swing.JToolBar.Separator jSeparator8;
@@ -498,16 +514,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel userLbl;
     // End of variables declaration//GEN-END:variables
 
-    private void doStuff() {
-        StaffRegistrationForm frame = new StaffRegistrationForm();
-        frame.setVisible(true); //necessary as of 1.3
-        frame.setLocation(FinaSys.centre);
-        desktop.add(frame);
-        try {
-            frame.setSelected(true);
-        } catch (java.beans.PropertyVetoException e) {
-        }
-    }
+    
 
     private void doAccessCheck() {
         switch (FinaSys.getUser().getAccessLevel()) {
