@@ -5,14 +5,18 @@
  */
 package finasys;
 
+import finasys.forms.LoadingForm;
 import finasys.forms.administration.AdministrationForm;
 import finasys.forms.report.GraphForm;
 import finasys.forms.ViewTaxIncomesForm;
+import finasys.forms.staff.AddStaffForm;
 import finasys.forms.staff.ListStaffForm;
+import finasys.forms.staff.StaffSearchForm;
 import finasys.managers.AccessManager;
 import finasys.managers.DatabaseManager;
 import java.awt.Color;
 import java.awt.Component;
+import java.beans.PropertyVetoException;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,6 +24,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import tests.Graph;
 import tests.GraphSettings;
@@ -35,7 +41,8 @@ public class MainFrame extends javax.swing.JFrame {
         return desktop;
     }
 
-    DateFormat dateFormat;
+    private final DateFormat dateFormat;
+    private LoadingForm loadingForm;
 
     /**
      * Creates new form FinacSysMain
@@ -46,6 +53,8 @@ public class MainFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setContentPane(desktop);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        // Pull up progress bar
+        doLoadingBar();
 //        Access check
         doAccessCheck();
         // Update Status bar
@@ -56,6 +65,12 @@ public class MainFrame extends javax.swing.JFrame {
 //        desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
     }
 
+    private void doLoadingBar() {
+        loadingForm = new LoadingForm();
+        loadingForm.getProgressBar().setIndeterminate(true);
+        FinaSys.addToDesktop(loadingForm);
+    }
+
     public final synchronized void statusUpdate() {
         userLbl.setText(FinaSys.getUser().getUsername());
         userLbl.setForeground(Color.green);
@@ -64,6 +79,19 @@ public class MainFrame extends javax.swing.JFrame {
             databaseStatusLbl.setForeground(Color.green);
             connectBtn.setText("Connected");
             connectBtn.setEnabled(false);
+            if (!loadingForm.isClosed()) {
+                loadingForm.dispose();
+                JOptionPane optionPane = new JOptionPane("Connected!");
+                // Jdialog
+                optionPane.setVisible(true);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                optionPane.setValue(false);
+
+            }
         } else {
             databaseStatusLbl.setText("Offline");
             databaseStatusLbl.setForeground(Color.red);
@@ -148,7 +176,7 @@ public class MainFrame extends javax.swing.JFrame {
         dateLbl = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        searchStaffMnuBtn = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         logoutMenuBtn = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -321,8 +349,13 @@ public class MainFrame extends javax.swing.JFrame {
 
         fileMenu.setText("File");
 
-        jMenuItem2.setText("Search Staff");
-        fileMenu.add(jMenuItem2);
+        searchStaffMnuBtn.setText("Search Staff");
+        searchStaffMnuBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchStaffMnuBtnActionPerformed(evt);
+            }
+        });
+        fileMenu.add(searchStaffMnuBtn);
         fileMenu.add(jSeparator3);
 
         logoutMenuBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
@@ -371,21 +404,8 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void adminBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminBtnActionPerformed
-        AdministrationForm af = AdministrationForm.getInstance();
-        if (af.isVisible()) {
-            try {
-                af.setSelected(true);
-            } catch (java.beans.PropertyVetoException e) {
-            }
-            return;
-        }
-        desktop.add(af);
-        af.setLocation(FinaSys.centreFrame(af));
-        af.setVisible(true);
-        try {
-            af.setSelected(true);
-        } catch (java.beans.PropertyVetoException e) {
-        }
+        FinaSys.addToDesktop(AdministrationForm.getInstance());
+        
     }//GEN-LAST:event_adminBtnActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -403,22 +423,8 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void listTaxIncomeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listTaxIncomeBtnActionPerformed
-        ViewTaxIncomesForm form = ViewTaxIncomesForm.getInstance();
-        if (form.isVisible()) {
-            try {
-                form.setSelected(true);
-            } catch (java.beans.PropertyVetoException e) {
-            }
-//            af.toFront();
-            return;
-        }
-        desktop.add(form);
-        form.setLocation(FinaSys.centreFrame(form));
-        form.setVisible(true);
-        try {
-            form.setSelected(true);
-        } catch (java.beans.PropertyVetoException e) {
-        }
+        FinaSys.addToDesktop(ViewTaxIncomesForm.getInstance());
+        
     }//GEN-LAST:event_listTaxIncomeBtnActionPerformed
 
     private void logoutMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutMenuBtnActionPerformed
@@ -430,22 +436,8 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void listStaffMembersBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listStaffMembersBtnActionPerformed
-        ListStaffForm form = new ListStaffForm();
-        if (form.isVisible()) {
-            try {
-                form.setSelected(true);
-            } catch (java.beans.PropertyVetoException e) {
-            }
-//            af.toFront();
-            return;
-        }
-        desktop.add(form);
-        form.setLocation(FinaSys.centreFrame(form));
-        form.setVisible(true);
-        try {
-            form.setSelected(true);
-        } catch (java.beans.PropertyVetoException e) {
-        }
+        FinaSys.addToDesktop(new ListStaffForm());
+        
     }//GEN-LAST:event_listStaffMembersBtnActionPerformed
 
     private void connectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectBtnActionPerformed
@@ -468,8 +460,13 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_connectBtnActionPerformed
 
     private void addStaffBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStaffBtnActionPerformed
-        // TODO add your handling code here:
+        FinaSys.addToDesktop(new AddStaffForm());
+        
     }//GEN-LAST:event_addStaffBtnActionPerformed
+
+    private void searchStaffMnuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchStaffMnuBtnActionPerformed
+        FinaSys.addToDesktop(new StaffSearchForm());
+    }//GEN-LAST:event_searchStaffMnuBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -496,7 +493,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JToolBar.Separator jSeparator1;
@@ -511,10 +507,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton listStaffMembersBtn;
     private javax.swing.JButton listTaxIncomeBtn;
     private javax.swing.JMenuItem logoutMenuBtn;
+    private javax.swing.JMenuItem searchStaffMnuBtn;
     private javax.swing.JLabel userLbl;
     // End of variables declaration//GEN-END:variables
-
-    
 
     private void doAccessCheck() {
         switch (FinaSys.getUser().getAccessLevel()) {
