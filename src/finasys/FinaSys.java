@@ -62,7 +62,6 @@ import finasys.managers.DatabaseManager;
 import finasys.managers.UserManager;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
-import java.util.Objects;
 import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
@@ -110,7 +109,32 @@ public class FinaSys {
     public static JDesktopPane getDesktop() {
         return MainFrame.getDesktop();
     }
-
+    
+    /**
+     * Add an internal frame to the desktop pane. Centre it, make it visible and
+     * then finally select it. If it is already visible, select it and 
+     * return the form.
+     * @param form JInternalFrame to add to the desktop pane.
+     * @return Form added or selected.
+     */
+    public static JInternalFrame addToDesktop(JInternalFrame form){
+        if (form.isVisible()) {
+            try {
+                form.setSelected(true);
+            } catch (java.beans.PropertyVetoException e) {
+            }
+            return form;
+        }
+        getDesktop().add(form);
+        form.setLocation(centreFrame(form));
+        form.setVisible(true);
+        try {
+            form.setSelected(true);
+        } catch (java.beans.PropertyVetoException e) {
+        }
+        return form;
+    }
+    
     /**
      * Get Point at which is the center if the given frame compared to the
      * desktop pane.
@@ -201,7 +225,7 @@ public class FinaSys {
      * Start the Java Derby server on a new thread.
      */
     private static void startDerbyServer() {
-        if (Objects.isNull(server)) {
+        if (server==null) {
             server = new ServerThread();
             server.start();
         }
