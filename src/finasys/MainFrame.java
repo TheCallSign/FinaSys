@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
@@ -80,16 +81,21 @@ public class MainFrame extends javax.swing.JFrame {
             connectBtn.setText("Connected");
             connectBtn.setEnabled(false);
             if (!loadingForm.isClosed()) {
-                loadingForm.dispose();
-                JOptionPane optionPane = new JOptionPane("Connected!");
-                // Jdialog
-                optionPane.setVisible(true);
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                optionPane.setValue(false);
+                loadingForm.getProgressBar().setIndeterminate(false);
+                loadingForm.getProgressBar().setValue(100);
+                loadingForm.setTitle("Connected");
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                       
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        loadingForm.dispose();
+                    }
+                });
 
             }
         } else {
@@ -405,7 +411,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void adminBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminBtnActionPerformed
         FinaSys.addToDesktop(AdministrationForm.getInstance());
-        
+
     }//GEN-LAST:event_adminBtnActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -424,7 +430,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void listTaxIncomeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listTaxIncomeBtnActionPerformed
         FinaSys.addToDesktop(ViewTaxIncomesForm.getInstance());
-        
+
     }//GEN-LAST:event_listTaxIncomeBtnActionPerformed
 
     private void logoutMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutMenuBtnActionPerformed
@@ -437,7 +443,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void listStaffMembersBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listStaffMembersBtnActionPerformed
         FinaSys.addToDesktop(new ListStaffForm());
-        
+
     }//GEN-LAST:event_listStaffMembersBtnActionPerformed
 
     private void connectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectBtnActionPerformed
@@ -461,7 +467,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void addStaffBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStaffBtnActionPerformed
         FinaSys.addToDesktop(new AddStaffForm());
-        
+
     }//GEN-LAST:event_addStaffBtnActionPerformed
 
     private void searchStaffMnuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchStaffMnuBtnActionPerformed
