@@ -60,11 +60,13 @@ import finasys.managers.AccessManager;
 import finasys.managers.AccessManager.Level;
 import finasys.managers.DatabaseManager;
 import finasys.managers.UserManager;
+import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
+import javax.swing.UIManager;
 
 /**
  *
@@ -109,15 +111,16 @@ public class FinaSys {
     public static JDesktopPane getDesktop() {
         return MainFrame.getDesktop();
     }
-    
+
     /**
      * Add an internal frame to the desktop pane. Centre it, make it visible and
-     * then finally select it. If it is already visible, select it and 
-     * return the form.
+     * then finally select it. If it is already visible, select it and return
+     * the form.
+     *
      * @param form JInternalFrame to add to the desktop pane.
      * @return Form added or selected.
      */
-    public static JInternalFrame addToDesktop(JInternalFrame form){
+    public static JInternalFrame addToDesktop(JInternalFrame form) {
         if (form.isVisible()) {
             try {
                 form.setSelected(true);
@@ -134,7 +137,7 @@ public class FinaSys {
         }
         return form;
     }
-    
+
     /**
      * Get Point at which is the center if the given frame compared to the
      * desktop pane.
@@ -225,9 +228,25 @@ public class FinaSys {
      * Start the Java Derby server on a new thread.
      */
     private static void startDerbyServer() {
-        if (server==null) {
+        if (server == null) {
             server = new ServerThread();
             server.start();
+        }
+    }
+
+    /**
+     * Set the font of the program.
+     *
+     * @param f Font.
+     */
+    public static void setUIFont(javax.swing.plaf.FontUIResource f) {
+        java.util.Enumeration keys = UIManager.getDefaults().keys();
+        while (keys.hasMoreElements()) {
+            Object key = keys.nextElement();
+            Object value = UIManager.get(key);
+            if (value != null && value instanceof javax.swing.plaf.FontUIResource) {
+                UIManager.put(key, f);
+            }
         }
     }
 
@@ -238,14 +257,16 @@ public class FinaSys {
      * @param args
      */
     public static void main(String args[]) {
-        //<editor-fold defaultstate="collapsed" desc="Look and Feel code">
+        //<editor-fold defaultstate="collapsed" desc="Look and Feel and Font code">
         /* Set the Windows look and feel */
         // I am using a windows L&F, becuase this program won't (probably)
         // get run on a non-windows installation.
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Windows".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    UIManager.setLookAndFeel(info.getClassName());
+                    // Set font
+                    setUIFont(new javax.swing.plaf.FontUIResource("Trebuchet MS", Font.PLAIN, 12));
                     break;
                 }
             }
@@ -264,7 +285,6 @@ public class FinaSys {
                 UserManager.getInstance();
                 DatabaseManager.getInstance();
                 AccessManager.getInstance().setUserLevel(Level.NONE);
-
                 //Set up login window
                 loginWindow = new LoginWindow();
                 loginWindow.setVisible(true);
