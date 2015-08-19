@@ -9,6 +9,7 @@ import finasys.enities.Addresses;
 import finasys.enities.FinaSysEntity;
 import finasys.enities.Staff;
 import finasys.enities.Tincomes;
+import finasys.enities.Vendors;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -74,17 +75,17 @@ public class DatabaseManager {
         return em.createNamedQuery("Addresses.findAll", Addresses.class).getResultList();
     }
 
-    public void insert(FinaSysEntity entity) {
+    public void insert(Object entity) {
         EntityTransaction et = em.getTransaction();
         et.begin();
         em.persist(entity);
         et.commit();
     }
 
-    public void multipleInsert(List<FinaSysEntity> entities) {
+    public void multipleInsert(List<Object> entities) {
         EntityTransaction et = em.getTransaction();
         et.begin();
-        for (FinaSysEntity entity : entities) {
+        for (Object entity : entities) {
             em.persist(entity);
         }
         et.commit();
@@ -97,6 +98,9 @@ public class DatabaseManager {
     public List<Staff> getStaffRows() {
         return em.createNamedQuery("Staff.findAll", Staff.class).getResultList();
     }
+    public List<Vendors> getVendorRows() {
+        return em.createNamedQuery("Vendors.findAll", Vendors.class).getResultList();
+    }
 
     /**
      * Use a named query to get results.
@@ -106,7 +110,7 @@ public class DatabaseManager {
      * @return Query results.
      */
     public List<Staff> getStaffSimilar(String type, String value) {
-        Query q = em.createNativeQuery("SELECT * FROM ADMINISTRATOR.STAFF WHERE " + type + " like '" + value + "%'", Staff.class);
+        Query q = em.createNativeQuery("SELECT * FROM ADMINISTRATOR.STAFF WHERE LOWER(" + type + ") like LOWER('" + value + "%')", Staff.class);
         return q.getResultList();
     }
 
@@ -131,7 +135,7 @@ public class DatabaseManager {
     }
 
     public List<Addresses> getAddressSimilar(String type, String value) {
-        Query q = em.createNativeQuery("SELECT * FROM ADMINISTRATOR.ADDRESSES WHERE " + type + " like '" + value + "%'", Addresses.class);
+        Query q = em.createNativeQuery("SELECT * FROM ADMINISTRATOR.ADDRESSES WHERE LOWER(" + type + ") like LOWER('" + value + "%')", Addresses.class);
         return q.getResultList();
     }
 
