@@ -16,7 +16,7 @@ import javax.swing.SwingUtilities;
  *
  * @author stjohn
  */
-public class FindExistingAddressForm extends javax.swing.JInternalFrame implements AddressForm{
+public class FindExistingAddressForm extends AddressForm{
 
     Addresses address;
     
@@ -50,6 +50,7 @@ public class FindExistingAddressForm extends javax.swing.JInternalFrame implemen
         addressTable = new javax.swing.JTable();
         searchTxt = new javax.swing.JTextField();
         doneBtn = new javax.swing.JButton();
+        cancelBtn = new javax.swing.JButton();
 
         setTitle("Search Addresses");
 
@@ -96,22 +97,31 @@ public class FindExistingAddressForm extends javax.swing.JInternalFrame implemen
             }
         });
 
+        cancelBtn.setText("Cancel");
+        cancelBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(searchByCmb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(searchTxt))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(doneBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(searchByCmb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(searchTxt))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(cancelBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(doneBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -124,7 +134,9 @@ public class FindExistingAddressForm extends javax.swing.JInternalFrame implemen
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(doneBtn)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(doneBtn)
+                    .addComponent(cancelBtn))
                 .addContainerGap())
         );
 
@@ -163,6 +175,10 @@ public class FindExistingAddressForm extends javax.swing.JInternalFrame implemen
     private void doneBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneBtnActionPerformed
         this.dispose();
     }//GEN-LAST:event_doneBtnActionPerformed
+
+    private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_cancelBtnActionPerformed
     private static final String[] searchTypes = {"Street Name", "Suburb", "Zip Code"};
     private List<Addresses> addressList;
     String searchType, searchValue = "";
@@ -188,6 +204,7 @@ public class FindExistingAddressForm extends javax.swing.JInternalFrame implemen
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable addressTable;
+    private javax.swing.JButton cancelBtn;
     private javax.swing.JButton doneBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
