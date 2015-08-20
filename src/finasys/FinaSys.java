@@ -239,7 +239,7 @@ public class FinaSys {
      *
      * @param f Font.
      */
-    public static void setUIFont(javax.swing.plaf.FontUIResource f) {
+    private static void setUIFont(javax.swing.plaf.FontUIResource f) {
         java.util.Enumeration keys = UIManager.getDefaults().keys();
         while (keys.hasMoreElements()) {
             Object key = keys.nextElement();
