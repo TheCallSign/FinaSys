@@ -5,17 +5,11 @@
  */
 package finasys.forms;
 
-import finasys.User;
 import finasys.enities.Tincomes;
-import finasys.forms.administration.AdministrationForm;
 import finasys.managers.DatabaseManager;
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.text.NumberFormat;
 import java.util.List;
-import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 /**
  *
@@ -251,7 +245,7 @@ public final class ViewTaxIncomesForm extends javax.swing.JInternalFrame {
 
         private final String[] columnNames = {"Tax ID", "Amount", "Date"};
         private final Object[][] data;
-
+        private final NumberFormat nf =  NumberFormat.getCurrencyInstance();
         public TaxTableModel(List<Tincomes> taxes) {
             if (taxes == null || taxes.isEmpty()) { // NULL CHECK 
                 data = new Object[][]{};
@@ -260,7 +254,7 @@ public final class ViewTaxIncomesForm extends javax.swing.JInternalFrame {
             data = new Object[taxes.size()][3];
             for (int i = 0; i < taxes.size(); i++) {
                 data[i][0] = taxes.get(i).getTaxid();
-                data[i][1] = taxes.get(i).getAmount();
+                data[i][1] = nf.format(taxes.get(i).getAmount());
                 data[i][2] = taxes.get(i).getTdate();
             }
         }
