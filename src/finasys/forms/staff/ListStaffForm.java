@@ -147,6 +147,11 @@ public class ListStaffForm extends javax.swing.JInternalFrame {
         });
 
         removeStaffMember.setText("Remove");
+        removeStaffMember.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeStaffMemberActionPerformed(evt);
+            }
+        });
 
         searchBtn.setText("Search");
         searchBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -271,22 +276,13 @@ public class ListStaffForm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_refreshBtnActionPerformed
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
-        StaffSearchForm form = StaffSearchForm.getInstance();
-        if (form.isVisible()) {
-            try {
-                form.setSelected(true);
-            } catch (java.beans.PropertyVetoException e) {
-            }
-            return;
-        }
-        FinaSys.getDesktop().add(form);
-        form.setLocation(FinaSys.centreFrame(form));
-        form.setVisible(true);
-        try {
-            form.setSelected(true);
-        } catch (java.beans.PropertyVetoException e) {
-        }
+        FinaSys.addToDesktop(StaffSearchForm.getInstance());
+        
     }//GEN-LAST:event_searchBtnActionPerformed
+
+    private void removeStaffMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeStaffMemberActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_removeStaffMemberActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

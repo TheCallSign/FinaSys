@@ -5,7 +5,9 @@
  */
 package finasys.forms.staff;
 
+import finasys.FinaSys;
 import finasys.enities.Staff;
+import finasys.forms.address.NewAddressForm;
 import finasys.managers.DatabaseManager;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -18,7 +20,7 @@ import javax.swing.SwingUtilities;
 public class StaffSearchForm extends javax.swing.JInternalFrame {
 
     private static StaffSearchForm instance;
-
+    
     public static StaffSearchForm getInstance() {
         if (instance == null) {
             instance = new StaffSearchForm();
@@ -42,7 +44,7 @@ public class StaffSearchForm extends javax.swing.JInternalFrame {
         refresh();
     }
     private static final String[] searchTypes = {"Staffid", "Fname", "Sname", "Salary", "Contact"};
-    private List<Staff> staffList;
+    private static List<Staff> staffList;
     String searchType, searchValue = "";
 
     private void updateTable() {
@@ -159,6 +161,11 @@ public class StaffSearchForm extends javax.swing.JInternalFrame {
         });
 
         addressBtn.setText("Show Address");
+        addressBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addressBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -218,6 +225,10 @@ public class StaffSearchForm extends javax.swing.JInternalFrame {
         DatabaseManager.getInstance().removeEntity(staff);
         refresh();
     }//GEN-LAST:event_removeBtnActionPerformed
+
+    private void addressBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addressBtnActionPerformed
+        FinaSys.addToDesktop(new NewAddressForm(staffList.get(staffTable.getSelectedRow())));
+    }//GEN-LAST:event_addressBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

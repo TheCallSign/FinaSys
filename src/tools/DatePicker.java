@@ -5,16 +5,17 @@
  */
 package tools;
 
-import java.lang.reflect.Method;
+import javax.swing.JTextField;
 import org.jfree.ui.DateChooserPanel;
 
 /**
  *
  * @author stjohn
  */
-public class DatePicker extends javax.swing.JFrame {
+public class DatePicker extends javax.swing.JInternalFrame {
 
     DateChooserPanel dateChooserPanel = new DateChooserPanel();
+    private JTextField status;
 
     /**
      * Creates new form DatePicker
@@ -28,7 +29,8 @@ public class DatePicker extends javax.swing.JFrame {
         
     }
      
-    public DateChooserPanel getDateChooserPnl(){
+    public DateChooserPanel getDateChooserPnl(JTextField status){
+        this.status = status;
         return dateChooserPanel;
     }
     @Override
@@ -46,22 +48,36 @@ public class DatePicker extends javax.swing.JFrame {
     private void initComponents() {
 
         dateContainer = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        chooseDateBtn = new javax.swing.JButton();
+        cancelBtn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Choose Date");
 
         javax.swing.GroupLayout dateContainerLayout = new javax.swing.GroupLayout(dateContainer);
         dateContainer.setLayout(dateContainerLayout);
         dateContainerLayout.setHorizontalGroup(
             dateContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 319, Short.MAX_VALUE)
         );
         dateContainerLayout.setVerticalGroup(
             dateContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 133, Short.MAX_VALUE)
+            .addGap(0, 137, Short.MAX_VALUE)
         );
 
-        jButton1.setText("Choose Date");
+        chooseDateBtn.setText("Choose Date");
+        chooseDateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chooseDateBtnActionPerformed(evt);
+            }
+        });
+
+        cancelBtn.setText("Cancel");
+        cancelBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -72,8 +88,9 @@ public class DatePicker extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(dateContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 224, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                        .addComponent(cancelBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(chooseDateBtn)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -82,17 +99,31 @@ public class DatePicker extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(dateContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(2, 2, 2)
-                .addComponent(jButton1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(chooseDateBtn)
+                    .addComponent(cancelBtn))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void chooseDateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseDateBtnActionPerformed
+       status.setText(dateChooserPanel.getDate().toString());
+        this.dispose();
+    }//GEN-LAST:event_chooseDateBtnActionPerformed
+
+    private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_cancelBtnActionPerformed
+    public static void main(String[] args) {
+        new DatePicker().setVisible(true);
+    }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cancelBtn;
+    private javax.swing.JButton chooseDateBtn;
     private javax.swing.JPanel dateContainer;
-    private javax.swing.JButton jButton1;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,10 +5,13 @@
  */
 package tools.finasyscontent;
 
+import finasys.ServerThread;
 import finasys.enities.Addresses;
+import finasys.enities.Expenses;
 import finasys.enities.FinaSysEntity;
 import finasys.enities.Staff;
 import finasys.enities.Tincomes;
+import finasys.enities.Vendors;
 import finasys.managers.DatabaseManager;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -49,24 +52,31 @@ public class FinaSysContentGen {
     private static int counter = 0;
 
     private static DatabaseManager dm;
+
     public static void main(String[] args) {
 //        try {
         //        for(int i = 0;i<100;i++){
 //            int code = getInstance().getRandomInt(16)+71;
 //            System.out.println("0"+code+" "+(getInstance().getRandomInt(900_000_0)+100_000_0));
 //        }
-        
+        ServerThread t = new ServerThread();
+        t.start();
         dm = DatabaseManager.getInstance();
         dm.connect();
 //        for (int i = 0; i < 300; i++) {
 //            FinaSysContentGen.getInstance().run(300, "Addresses");
 //            dm.flush();
 //            FinaSysContentGen.getInstance().run(300, "Staff");
-            FinaSysContentGen.getInstance().run(30000, "Tax");
+        FinaSysContentGen.getInstance().run(3000, "Expenses");
 //        }
-        
+
         dm.shutdown();
+        try {
+            t.shutdown();
 //            System.out.println(new java.sql.Date(FinaSysContentGen.getInstance().getRandomDate(2014, 2).getTime()));
+        } catch (Exception ex) {
+            Logger.getLogger(FinaSysContentGen.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
@@ -78,7 +88,8 @@ public class FinaSysContentGen {
     }
 
     private void run(int interations, String entityName) {
-        
+
+        List objects = new ArrayList<>();
         switch (entityName) {
             case "Addresses":
                 for (int i = 0; i < interations; i++) {
@@ -91,8 +102,9 @@ public class FinaSysContentGen {
                     obj.setStreetNumber(getRandomInt(50) + 1);
                     obj.setSuburb(getRandomSuburb());
                     dm.insert(obj);
-                    
-                }   break;
+
+                }
+                break;
             case "Staff":
                 for (int i = 0; i < interations; i++) {
                     Staff obj = new Staff();
@@ -111,17 +123,35 @@ public class FinaSysContentGen {
                     dm.insert(obj);
 //                System.out.println(dm.getAddressRows());
 //im a loser ! :0 <==8
-            }   break;
+                }
+                break;
             case "Tax":
-//                List<Tincome> objects = new ArrayList<>();
                 for (int i = 0; i < interations; i++) {
                     Tincomes obj = new Tincomes();
-                    obj.setAmount(getRandomInt(100_000_000)+500_000);
+                    obj.setAmount(getRandomInt(1_000_000) + 50_000);
                     obj.setTdate(new java.sql.Date(getRandomDate(1990, 24).getTime()));
-                    dm.insert(obj);
+                    objects.add(obj);
                 }
-            
+                break;
+            case "Expenses":
+                objects = new ArrayList<>();
+                String[] str = {"water", "elec", "waste services", "telkom"};
+                List<Vendors> vendors = dm.getVendorRows();
+                for (int i = 0; i < interations; i++) {
+                    int rand = getRandomInt(3) + 1;
+                    Expenses obj = new Expenses();
+                    obj.setAmount((double) getRandomInt(100_000) + 50_000);
+                    obj.setVendorid(vendors.get(rand));
+                    boolean rep = gen.nextBoolean();
+                    obj.setRepeat(rep);
+                    obj.setRepeatExpiry(rep ? new java.sql.Date(getRandomDate(2015, 5).getTime()) : null);
+                    obj.setExpenseName(str[rand]);
+                    objects.add(obj);
+                }
         }
+        System.out.println("Finished randomizing");
+        dm.multipleInsert(objects);
+        dm.multipleInsert(objects);
         System.out.println("Generated " + interations + " new records");
     }
 
