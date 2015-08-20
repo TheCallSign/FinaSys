@@ -6,11 +6,12 @@
 package finasys.forms.address;
 
 import finasys.enities.Addresses;
+import javax.swing.JInternalFrame;
 
 /**
  * Help get an address from a form.
  * @author St John Giddy
  */
-public interface AddressForm {
-    public Addresses getAddress();
+public abstract class AddressForm extends JInternalFrame {
+    abstract public Addresses getAddress();
 }
